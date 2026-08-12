@@ -18,8 +18,8 @@ export default function SignUpPage() {
     if (form.password.length < 6) return setError('Password must be at least 6 characters.')
     setLoading(true)
     try {
-      await register(form.name, form.email, form.password)
-      navigate('/dashboard', { replace: true })
+      const newUser = await register(form.name, form.email, form.password)
+      navigate(newUser.role === 'admin' ? '/admin' : '/dashboard', { replace: true })
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.')
     } finally { setLoading(false) }
