@@ -16,15 +16,15 @@ export default function Navbar() {
 
   const navLinks = [
     { to: '/', label: 'Home' },
+    { to: '/dashboard/orders', label: 'Orders' },
+    { to: '/dashboard/returns', label: 'Returns' },
     { to: '/stock', label: 'Stock Availability' },
     { to: '/help', label: 'Help' },
-    { to: '/about', label: 'About' },
-    { to: '/contact', label: 'Contact' },
   ]
 
   return (
     <nav className="sticky top-0 z-50 bg-brand-navy/95 backdrop-blur border-b border-brand-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-6 sm:px-12 lg:px-24">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
