@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Package, Search, Clock, MapPin, AlertCircle } from 'lucide-react'
 import api from '../../services/api'
+import Sidebar from '../../components/Sidebar'
 
 export default function CustomerOrders() {
   const [orders, setOrders]   = useState([])
@@ -88,34 +89,37 @@ export default function CustomerOrders() {
   )
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
-      <h1 className="text-2xl font-bold text-white mb-6">My Orders</h1>
+    <div className="flex min-h-screen bg-brand-navy">
+      <Sidebar />
+      <div className="flex-1 max-w-4xl mx-auto px-6 sm:px-8 py-10 animate-fade-in overflow-y-auto">
+        <h1 className="text-2xl font-bold text-white mb-6">My Orders</h1>
 
-      {/* Track by ID */}
-      <div className="card mb-8">
-        <h2 className="text-white font-semibold mb-3">Track an Order</h2>
-        <form onSubmit={handleTrack} className="flex gap-3">
-          <input type="text" placeholder="Enter order ID (e.g. NS-10021)" value={trackId}
-            onChange={e => setTrackId(e.target.value)} required className="input-field flex-1" />
-          <button type="submit" disabled={tracking} className="btn-gold whitespace-nowrap">
-            <Search size={15} />{tracking ? '…' : 'Track'}
-          </button>
-        </form>
-        {trackErr && <p className="text-red-400 text-sm mt-3 flex items-center gap-2"><AlertCircle size={14}/>{trackErr}</p>}
-        {tracked && <div className="mt-4 animate-slide-up"><OrderCard order={tracked} /></div>}
-      </div>
-
-      {/* My orders list */}
-      <h2 className="text-white font-semibold mb-4">Order History</h2>
-      {loading ? (
-        <div className="space-y-4">{[...Array(3)].map((_, i) => <div key={i} className="card h-32 animate-pulse" />)}</div>
-      ) : orders.length === 0 ? (
-        <div className="card text-center py-12">
-          <Package size={44} className="text-brand-muted mx-auto mb-3" />
-          <h3 className="text-white font-semibold mb-1">No orders found</h3>
-          <p className="text-brand-muted text-sm">Your order history will appear here.</p>
+        {/* Track by ID */}
+        <div className="card mb-8">
+          <h2 className="text-white font-semibold mb-3">Track an Order</h2>
+          <form onSubmit={handleTrack} className="flex gap-3">
+            <input type="text" placeholder="Enter order ID (e.g. NS-10021)" value={trackId}
+              onChange={e => setTrackId(e.target.value)} required className="input-field flex-1" />
+            <button type="submit" disabled={tracking} className="btn-gold whitespace-nowrap">
+              <Search size={15} />{tracking ? '…' : 'Track'}
+            </button>
+          </form>
+          {trackErr && <p className="text-red-400 text-sm mt-3 flex items-center gap-2"><AlertCircle size={14}/>{trackErr}</p>}
+          {tracked && <div className="mt-4 animate-slide-up"><OrderCard order={tracked} /></div>}
         </div>
-      ) : orders.map(order => <OrderCard key={order._id} order={order} />)}
+
+        {/* My orders list */}
+        <h2 className="text-white font-semibold mb-4">Order History</h2>
+        {loading ? (
+          <div className="space-y-4">{[...Array(3)].map((_, i) => <div key={i} className="card h-32 animate-pulse" />)}</div>
+        ) : orders.length === 0 ? (
+          <div className="card text-center py-12">
+            <Package size={44} className="text-brand-muted mx-auto mb-3" />
+            <h3 className="text-white font-semibold mb-1">No orders found</h3>
+            <p className="text-brand-muted text-sm">Your order history will appear here.</p>
+          </div>
+        ) : orders.map(order => <OrderCard key={order._id} order={order} />)}
+      </div>
     </div>
   )
 }

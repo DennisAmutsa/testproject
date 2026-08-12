@@ -27,12 +27,12 @@ import AdminContacts from './pages/admin/AdminContacts'
 // Route guards
 function RequireAuth({ children }) {
   const { user, loading } = useAuth()
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full" /></div>
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-brand-navy"><div className="animate-spin w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full" /></div>
   return user ? children : <Navigate to="/login" replace />
 }
 function RequireAdmin({ children }) {
   const { user, loading } = useAuth()
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full" /></div>
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-brand-navy"><div className="animate-spin w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full" /></div>
   if (!user) return <Navigate to="/login" replace />
   return user.role === 'admin' ? children : <Navigate to="/dashboard" replace />
 }
@@ -43,39 +43,72 @@ function RedirectIfLoggedIn({ children }) {
   return children
 }
 
+// Home route auto-redirect wrapper
+function HomeWrapper() {
+  const { user } = useAuth()
+  if (user) {
+    return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />
+  }
+  return <HomePage />
+}
+
 export default function App() {
+  const { user } = useAuth()
+  
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-1">
-        <Routes>
-          {/* Public */}
-          <Route path="/"        element={<HomePage />} />
-          <Route path="/about"   element={<AboutPage />} />
-          <Route path="/help"    element={<HelpPage />} />
-          <Route path="/stock"   element={<StockPage />} />
-          <Route path="/contact" element={<ContactPage />} />
+    <div className="min-h-screen flex flex-col bg-brand-navy">
+      <Routes>
+        {/* Dashboard/Admin Routes (No public Navbar/Footer, they will render their own sidebars) */}
+        <Route path="/dashboard/*" element={
+          <RequireAuth>
+            <div className="flex-1 flex">
+              <main className="flex-1 bg-brand-navy">
+                <Routes>
+                  <Route path="/"         element={<CustomerDashboard />} />
+                  <Route path="/orders"  element={<CustomerOrders />} />
+                  <Route path="/returns" element={<CustomerReturns />} />
+                </Routes>
+              </main>
+            </div>
+          </RequireAuth>
+        } />
 
-          {/* Auth */}
-          <Route path="/login"  element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
-          <Route path="/signup" element={<RedirectIfLoggedIn><SignUpPage /></RedirectIfLoggedIn>} />
+        <Route path="/admin/*" element={
+          <RequireAdmin>
+            <div className="flex-1 flex">
+              <main className="flex-1 bg-brand-navy">
+                <Routes>
+                  <Route path="/"           element={<AdminDashboard />} />
+                  <Route path="/products"  element={<AdminProducts />} />
+                  <Route path="/orders"    element={<AdminOrders />} />
+                  <Route path="/returns"   element={<AdminReturns />} />
+                  <Route path="/contacts"  element={<AdminContacts />} />
+                </Routes>
+              </main>
+            </div>
+          </RequireAdmin>
+        } />
 
-          {/* Customer Dashboard */}
-          <Route path="/dashboard"         element={<RequireAuth><CustomerDashboard /></RequireAuth>} />
-          <Route path="/dashboard/orders"  element={<RequireAuth><CustomerOrders /></RequireAuth>} />
-          <Route path="/dashboard/returns" element={<RequireAuth><CustomerReturns /></RequireAuth>} />
-
-          {/* Admin Dashboard */}
-          <Route path="/admin"           element={<RequireAdmin><AdminDashboard /></RequireAdmin>} />
-          <Route path="/admin/products"  element={<RequireAdmin><AdminProducts /></RequireAdmin>} />
-          <Route path="/admin/orders"    element={<RequireAdmin><AdminOrders /></RequireAdmin>} />
-          <Route path="/admin/returns"   element={<RequireAdmin><AdminReturns /></RequireAdmin>} />
-          <Route path="/admin/contacts"  element={<RequireAdmin><AdminContacts /></RequireAdmin>} />
-
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </main>
-      <Footer />
+        {/* Public Routes (With public Navbar and Footer) */}
+        <Route path="*" element={
+          <>
+            <Navbar />
+            <div className="flex-1">
+              <Routes>
+                <Route path="/"        element={<HomeWrapper />} />
+                <Route path="/about"   element={<AboutPage />} />
+                <Route path="/help"    element={<HelpPage />} />
+                <Route path="/stock"   element={<StockPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/login"   element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
+                <Route path="/signup"  element={<RedirectIfLoggedIn><SignUpPage /></RedirectIfLoggedIn>} />
+                <Route path="*"        element={<Navigate to="/" replace />} />
+              </Routes>
+            </div>
+            <Footer />
+          </>
+        } />
+      </Routes>
     </div>
   )
 }
