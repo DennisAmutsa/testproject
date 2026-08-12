@@ -16,7 +16,7 @@ import {
 } from 'lucide-react'
 import api from '../services/api'
 
-export default function Sidebar() {
+export default function Sidebar({ onClose }) {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
@@ -56,6 +56,7 @@ export default function Sidebar() {
   }, [])
 
   const handleLogout = async () => {
+    if (onClose) onClose();
     await logout()
     navigate('/')
   }
@@ -86,8 +87,8 @@ export default function Sidebar() {
     {
       title: 'ACCOUNT',
       links: [
-        { to: '/dashboard/account', label: 'My Account', icon: User, disabled: true },
-        { to: '/dashboard/saved', label: 'Saved Items', icon: Heart, disabled: true },
+        { to: '/dashboard/account', label: 'My Account', icon: User },
+        { to: '/dashboard/saved', label: 'Saved Items', icon: Heart },
         { to: '/dashboard/notifications', label: 'Notifications', icon: Bell, badge: notificationCount }
       ]
     },
@@ -126,7 +127,13 @@ export default function Sidebar() {
                     <NavLink
                       key={lIdx}
                       to={link.disabled ? '#' : link.to}
-                      onClick={(e) => link.disabled && e.preventDefault()}
+                      onClick={(e) => {
+                        if (link.disabled) {
+                          e.preventDefault();
+                        } else if (onClose) {
+                          onClose();
+                        }
+                      }}
                       className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 group ${
                         isActive
                           ? 'text-[#f5c518] bg-[#f5c518]/10'

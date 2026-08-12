@@ -17,6 +17,8 @@ import CustomerLayout from './components/CustomerLayout'
 import CustomerDashboard from './pages/customer/CustomerDashboard'
 import CustomerOrders from './pages/customer/CustomerOrders'
 import CustomerReturns from './pages/customer/CustomerReturns'
+import CustomerAccount from './pages/customer/CustomerAccount'
+import CustomerSaved from './pages/customer/CustomerSaved'
 
 // Admin dashboard
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -69,6 +71,8 @@ export default function App() {
           <Route path="orders" element={<CustomerOrders />} />
           <Route path="returns" element={<CustomerReturns />} />
           <Route path="stock" element={<StockPage />} />
+          <Route path="account" element={<CustomerAccount />} />
+          <Route path="saved" element={<CustomerSaved />} />
         </Route>
 
         <Route path="/admin/*" element={
