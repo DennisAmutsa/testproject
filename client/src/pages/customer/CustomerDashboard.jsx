@@ -15,7 +15,6 @@ import {
   BookOpen
 } from 'lucide-react'
 import api from '../../services/api'
-import Sidebar from '../../components/Sidebar'
 
 export default function CustomerDashboard() {
   const { user, logout } = useAuth()
@@ -40,10 +39,15 @@ export default function CustomerDashboard() {
     }).finally(() => setLoading(false))
   }, [])
 
-  // Calculate dynamic stats
-  const activeOrdersCount = orders.filter(o => ['processing', 'shipped', 'out_for_delivery'].includes(o.status)).length || orders.length || 4;
-  const activeReturnsCount = returns.filter(r => ['requested', 'approved', 'received', 'refund_processing'].includes(r.status)).length || returns.length || 1;
-  const pendingRefundsCount = returns.filter(r => r.status === 'refund_processing').length || 0;
+  // Calculate dynamic stats without any mock or hardcoded fallback values
+  const activeOrdersCount = orders.filter(o => ['processing', 'shipped', 'out_for_delivery'].includes(o.status)).length;
+  const activeReturnsCount = returns.filter(r => ['requested', 'approved', 'received', 'refund_processing'].includes(r.status)).length;
+  const pendingRefundsCount = returns.filter(r => r.status === 'refund_processing').length;
+  
+  // Calculate dynamic notification count
+  const inTransitCount = orders.filter(o => ['shipped', 'out_for_delivery'].includes(o.status)).length;
+  const approvedReturnsCount = returns.filter(r => ['approved', 'refund_processing'].includes(r.status)).length;
+  const notificationCount = inTransitCount + approvedReturnsCount;
 
   const handleLogout = async () => {
     await logout()
@@ -98,43 +102,8 @@ export default function CustomerDashboard() {
     return 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=120&auto=format&fit=crop&q=60';
   };
 
-  // Mock initial orders to match design if db is empty (so it looks identical to mockup but updates dynamically)
-  const displayOrders = orders.length > 0 ? orders.slice(0, 4) : [
-    {
-      _id: 'mock1',
-      orderId: 'NS10025',
-      createdAt: '2024-08-10T12:00:00Z',
-      status: 'shipped',
-      items: [{ name: 'Wireless Noise Cancelling Headphones', quantity: 1, price: 15000 }]
-    },
-    {
-      _id: 'mock2',
-      orderId: 'NS10024',
-      createdAt: '2024-08-08T12:00:00Z',
-      status: 'processing',
-      items: [{ name: 'Smartwatch Series 9 Sport', quantity: 1, price: 42000 }]
-    },
-    {
-      _id: 'mock3',
-      orderId: 'NS10023',
-      createdAt: '2024-08-05T12:00:00Z',
-      status: 'delivered',
-      items: [{ name: 'Ultra Thin 15-inch Laptop', quantity: 1, price: 95000 }]
-    },
-    {
-      _id: 'mock4',
-      orderId: 'NS10022',
-      createdAt: '2024-08-03T12:00:00Z',
-      status: 'delivered',
-      items: [{ name: 'Premium Leather Tan Handbag', quantity: 1, price: 18000 }]
-    }
-  ];
-
   return (
-    <div className="flex w-full min-h-screen bg-[#f8fafc]">
-      <Sidebar />
-      
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <>
         {/* Top Header */}
         <header className="bg-white border-b border-slate-100 px-8 py-4 flex items-center justify-between z-10 flex-shrink-0 select-none">
           <div className="flex items-center gap-3">
@@ -153,7 +122,11 @@ export default function CustomerDashboard() {
             {/* Notifications */}
             <button className="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
               <Bell size={20} />
-              <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-orange-600 text-white rounded-full flex items-center justify-center text-[9px] font-black">3</span>
+              {notificationCount > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-orange-600 text-white rounded-full flex items-center justify-center text-[9px] font-black">
+                  {notificationCount}
+                </span>
+              )}
             </button>
             
             {/* User Dropdown */}
@@ -247,9 +220,15 @@ export default function CustomerDashboard() {
                         <div key={idx} className="h-16 bg-slate-50 rounded-xl animate-pulse" />
                       ))}
                     </div>
+                  ) : orders.length === 0 ? (
+                    <div className="text-center py-12 border border-dashed border-slate-205 rounded-xl">
+                      <Package size={36} className="text-slate-300 mx-auto mb-2" />
+                      <p className="text-slate-500 font-bold text-xs">No orders found.</p>
+                      <p className="text-slate-400 text-[10px] mt-0.5">Your order history will appear here.</p>
+                    </div>
                   ) : (
                     <div className="space-y-4">
-                      {displayOrders.map(order => {
+                      {orders.slice(0, 4).map(order => {
                         const firstItem = order.items?.[0] || { name: 'Retail Order', quantity: 1 };
                         return (
                           <div key={order._id} className="flex items-center justify-between p-4 border border-slate-100 rounded-xl hover:bg-slate-50/50 transition-colors">
@@ -278,7 +257,7 @@ export default function CustomerDashboard() {
                                 {order.status.replace(/_/g, ' ')}
                               </span>
                               <Link 
-                                to={order._id.startsWith('mock') ? `/dashboard/orders` : `/dashboard/orders?track=${order.orderId}`} 
+                                to={`/dashboard/orders?track=${order.orderId}`} 
                                 className="border border-amber-500/30 text-[#d4a017] hover:bg-[#f5c518]/5 font-extrabold px-4 py-1.5 rounded-lg text-xs transition-colors"
                               >
                                 {order.status === 'delivered' ? 'View' : 'Track'}
@@ -382,7 +361,6 @@ export default function CustomerDashboard() {
           </div>
 
         </main>
-      </div>
-    </div>
+    </>
   )
 }

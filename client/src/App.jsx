@@ -13,6 +13,7 @@ import HelpPage from './pages/HelpPage'
 import StockPage from './pages/StockPage'
 
 // Customer dashboard
+import CustomerLayout from './components/CustomerLayout'
 import CustomerDashboard from './pages/customer/CustomerDashboard'
 import CustomerOrders from './pages/customer/CustomerOrders'
 import CustomerReturns from './pages/customer/CustomerReturns'
@@ -59,19 +60,15 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-brand-navy">
       <Routes>
         {/* Dashboard/Admin Routes (No public Navbar/Footer, they will render their own sidebars) */}
-        <Route path="/dashboard/*" element={
+        <Route path="/dashboard" element={
           <RequireAuth>
-            <div className="flex-1 flex">
-              <main className="flex-1 bg-brand-navy">
-                <Routes>
-                  <Route path="/"         element={<CustomerDashboard />} />
-                  <Route path="/orders"  element={<CustomerOrders />} />
-                  <Route path="/returns" element={<CustomerReturns />} />
-                </Routes>
-              </main>
-            </div>
+            <CustomerLayout />
           </RequireAuth>
-        } />
+        }>
+          <Route index element={<CustomerDashboard />} />
+          <Route path="orders" element={<CustomerOrders />} />
+          <Route path="returns" element={<CustomerReturns />} />
+        </Route>
 
         <Route path="/admin/*" element={
           <RequireAdmin>
