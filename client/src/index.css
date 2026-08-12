@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    @apply bg-brand-navy text-white font-sans antialiased;
+    margin: 0;
+  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-brand-dark; }
+  ::-webkit-scrollbar-thumb { @apply bg-brand-border rounded-full; }
+}
+
+@layer components {
+  .btn-gold {
+    @apply bg-brand-gold text-brand-navy font-semibold px-6 py-2.5 rounded-lg
+           hover:bg-brand-gold-hover transition-all duration-200 
+           active:scale-95 inline-flex items-center gap-2 cursor-pointer;
+  }
+  .btn-outline {
+    @apply border border-brand-border text-white font-medium px-6 py-2.5 rounded-lg
+           hover:border-brand-gold hover:text-brand-gold transition-all duration-200
+           inline-flex items-center gap-2 cursor-pointer;
+  }
+  .card {
+    @apply bg-brand-card border border-brand-border rounded-2xl p-6
+           hover:border-brand-gold/40 transition-all duration-300;
+  }
+  .input-field {
+    @apply w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3
+           text-white placeholder-brand-muted focus:outline-none
+           focus:border-brand-gold/60 focus:ring-1 focus:ring-brand-gold/30
+           transition-all duration-200;
+  }
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+  .section-title {
+    @apply text-2xl font-bold text-white mb-1;
+  }
+  .section-sub {
+    @apply text-brand-muted text-sm mb-6;
+  }
+  .status-processing  { @apply badge bg-yellow-500/20 text-yellow-400; }
+  .status-shipped     { @apply badge bg-blue-500/20   text-blue-400;   }
+  .status-out_for_delivery { @apply badge bg-purple-500/20 text-purple-400; }
+  .status-delivered   { @apply badge bg-green-500/20  text-green-400;  }
+  .status-cancelled   { @apply badge bg-red-500/20    text-red-400;    }
+  .status-requested   { @apply badge bg-yellow-500/20 text-yellow-400; }
+  .status-approved    { @apply badge bg-blue-500/20   text-blue-400;   }
+  .status-refunded    { @apply badge bg-green-500/20  text-green-400;  }
+  .status-rejected    { @apply badge bg-red-500/20    text-red-400;    }
+}
