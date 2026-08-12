@@ -68,6 +68,7 @@ export default function App() {
           <Route index element={<CustomerDashboard />} />
           <Route path="orders" element={<CustomerOrders />} />
           <Route path="returns" element={<CustomerReturns />} />
+          <Route path="stock" element={<StockPage />} />
         </Route>
 
         <Route path="/admin/*" element={

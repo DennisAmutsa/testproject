@@ -179,7 +179,7 @@ export default function CustomerDashboard() {
               { label: 'Active orders', value: activeOrdersCount, labelFull: 'My Orders', icon: ShoppingBag, color: 'bg-[#f5c518]/10 text-[#d4a017]', link: '/dashboard/orders' },
               { label: 'Return request', value: activeReturnsCount, labelFull: 'Returns', icon: RotateCcw, color: 'bg-[#f5c518]/10 text-[#d4a017]', link: '/dashboard/returns' },
               { label: 'Pending', value: pendingRefundsCount, labelFull: 'Refunds', icon: CheckCircle, color: 'bg-[#f5c518]/10 text-[#d4a017]', link: '/dashboard/returns' },
-              { label: 'In stock', value: productsCount, labelFull: 'Products', icon: Package, color: 'bg-[#f5c518]/10 text-[#d4a017]', link: '/stock' }
+              { label: 'In stock', value: productsCount, labelFull: 'Products', icon: Package, color: 'bg-[#f5c518]/10 text-[#d4a017]', link: '/dashboard/stock' }
             ].map((stat, i) => (
               <Link key={i} to={stat.link} className="bg-white border border-slate-100 rounded-2xl p-5 hover:shadow-md transition-all group flex items-start justify-between">
                 <div>
@@ -308,7 +308,7 @@ export default function CustomerDashboard() {
                   {[
                     { label: 'Track an Order', to: '/dashboard/orders' },
                     { label: 'Request a Return', to: '/dashboard/returns' },
-                    { label: 'Check Product Stock', to: '/stock' }
+                    { label: 'Check Product Stock', to: '/dashboard/stock' }
                   ].map((act, idx) => (
                     <Link key={idx} to={act.to} className="w-full flex items-center justify-between p-3.5 rounded-xl bg-[#fffbeb] border border-[#fde68a]/40 text-[#451a03] hover:bg-[#fff9db] transition-colors text-xs font-bold">
                       <span>{act.label}</span>
@@ -333,7 +333,7 @@ export default function CustomerDashboard() {
                     { q: 'Where is my order?', link: '/dashboard/orders' },
                     { q: 'How do I return an item?', link: '/dashboard/returns' },
                     { q: 'How long do refunds take?', link: '/dashboard/returns' },
-                    { q: 'Is this product in stock?', link: '/stock' },
+                    { q: 'Is this product in stock?', link: '/dashboard/stock' },
                     { q: 'How do I change my delivery address?', link: '/help' }
                   ].map((faq, idx) => (
                     <Link key={idx} to={faq.link} className="flex items-center justify-between py-2.5 text-slate-650 hover:text-[#f5c518] text-xs font-semibold transition-colors border-b border-slate-50 last:border-0">

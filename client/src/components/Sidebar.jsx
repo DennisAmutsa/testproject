@@ -80,7 +80,7 @@ export default function Sidebar() {
         { to: '/dashboard/orders', label: 'My Orders', icon: Briefcase, badge: orderCount },
         { to: '/dashboard/orders?track=true', label: 'Track Delivery', icon: Truck },
         { to: '/dashboard/returns', label: 'Returns & Refunds', icon: RotateCcw, badge: returnCount },
-        { to: '/stock', label: 'Browse Products', icon: ShoppingBag }
+        { to: '/dashboard/stock', label: 'Browse Products', icon: ShoppingBag }
       ]
     },
     {
