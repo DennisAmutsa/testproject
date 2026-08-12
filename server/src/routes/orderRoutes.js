@@ -1,13 +1,24 @@
 import express from 'express';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
 import Order from '../models/Order.js';
+import Product from '../models/Product.js';
 
 const router = express.Router();
 
 // Customer - get own orders by email
 router.get('/my', protect, async (req, res) => {
   try {
-    const orders = await Order.find({ customerEmail: req.user.email }).sort({ createdAt: -1 });
+    const orders = await Order.find({ customerEmail: req.user.email }).sort({ createdAt: -1 }).lean();
+    for (const order of orders) {
+      if (order.items) {
+        for (const item of order.items) {
+          const prod = await Product.findOne({ name: item.name });
+          if (prod) {
+            item.image = prod.image;
+          }
+        }
+      }
+    }
     res.json(orders);
   } catch (e) { res.status(500).json({ message: e.message }); }
 });
@@ -15,8 +26,16 @@ router.get('/my', protect, async (req, res) => {
 // Public - track by orderId
 router.get('/:orderId', async (req, res) => {
   try {
-    const order = await Order.findOne({ orderId: req.params.orderId });
+    const order = await Order.findOne({ orderId: req.params.orderId }).lean();
     if (!order) return res.status(404).json({ message: 'Order not found. Please check your order ID.' });
+    if (order.items) {
+      for (const item of order.items) {
+        const prod = await Product.findOne({ name: item.name });
+        if (prod) {
+          item.image = prod.image;
+        }
+      }
+    }
     res.json(order);
   } catch (e) { res.status(500).json({ message: e.message }); }
 });
@@ -24,7 +43,17 @@ router.get('/:orderId', async (req, res) => {
 // Admin - get all orders
 router.get('/', protect, adminOnly, async (req, res) => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 });
+    const orders = await Order.find().sort({ createdAt: -1 }).lean();
+    for (const order of orders) {
+      if (order.items) {
+        for (const item of order.items) {
+          const prod = await Product.findOne({ name: item.name });
+          if (prod) {
+            item.image = prod.image;
+          }
+        }
+      }
+    }
     res.json(orders);
   } catch (e) { res.status(500).json({ message: e.message }); }
 });

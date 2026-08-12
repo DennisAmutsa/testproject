@@ -14,6 +14,7 @@ const orderSchema = new mongoose.Schema({
       name: String,
       quantity: Number,
       price: Number,
+      image: { type: String, default: '' },
     },
   ],
   trackingNumber: { type: String, default: null },
