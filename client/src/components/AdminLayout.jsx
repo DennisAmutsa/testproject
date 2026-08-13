@@ -27,8 +27,8 @@ export default function AdminLayout() {
 
   const handleLogout = async () => {
     setDropdownOpen(false)
-    await logout()
     navigate('/')
+    await logout()
   }
 
   // Get dynamic title based on location
@@ -83,7 +83,7 @@ export default function AdminLayout() {
     <div className="flex w-full h-screen bg-[#f8fafc] text-slate-800 overflow-hidden relative">
       
       {/* 1. Desktop Sidebar (Sticky, persistent) */}
-      <div className="hidden lg:block flex-shrink-0">
+      <div className="hidden lg:flex flex-shrink-0 bg-[#0a0e1a]">
         <AdminSidebar />
       </div>
 

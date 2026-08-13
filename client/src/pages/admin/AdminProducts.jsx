@@ -15,6 +15,8 @@ export default function AdminProducts() {
   const [error, setError]           = useState('')
   const [filterCat, setFilterCat]   = useState('')
   const [filterStock, setFilterStock] = useState('')
+  // Quick stock edit: { [productId]: { open, variants, saving } }
+  const [quickEdit, setQuickEdit]   = useState({})
 
   const fetchProducts = () =>
     api.get('/stock', { params: filterCat ? { category: filterCat } : {} })
@@ -72,6 +74,26 @@ export default function AdminProducts() {
     if (!confirm('Delete this product?')) return
     await api.delete(`/stock/${id}`).catch(() => {})
     fetchProducts()
+  }
+
+  // Quick stock update helpers
+  const openQuickEdit = (p) => setQuickEdit(q => ({
+    ...q,
+    [p._id]: { open: true, saving: false, variants: JSON.parse(JSON.stringify(p.variants || [])) }
+  }))
+  const closeQuickEdit = (id) => setQuickEdit(q => ({ ...q, [id]: { ...q[id], open: false } }))
+  const updateQuickVariant = (id, i, val) => setQuickEdit(q => ({
+    ...q,
+    [id]: { ...q[id], variants: q[id].variants.map((v, idx) => idx === i ? { ...v, stock: Number(val) } : v) }
+  }))
+  const saveQuickStock = async (p) => {
+    setQuickEdit(q => ({ ...q, [p._id]: { ...q[p._id], saving: true } }))
+    try {
+      await api.put(`/stock/${p._id}`, { ...p, variants: quickEdit[p._id].variants })
+      fetchProducts()
+      closeQuickEdit(p._id)
+    } catch { /* silent */ }
+    finally { setQuickEdit(q => ({ ...q, [p._id]: { ...q[p._id], saving: false } })) }
   }
 
   return (
@@ -211,42 +233,94 @@ export default function AdminProducts() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map(p => (
-            <div key={p._id} className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow relative text-slate-800 flex flex-col justify-between min-h-[190px]">
-              <div>
-                {p.image && (
-                  <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-xl mb-4 border border-slate-100" />
-                )}
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <div className="min-w-0">
-                    <h3 className="text-slate-800 font-extrabold text-sm truncate">{p.name}</h3>
-                    <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mt-0.5">{p.category}</p>
+          {products.map(p => {
+            const qe = quickEdit[p._id] || {}
+            const totalStock = p.variants?.reduce((s, v) => s + (v.stock || 0), 0) ?? p.totalStock ?? 0
+            return (
+              <div key={p._id} className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow relative text-slate-800 flex flex-col justify-between min-h-[190px]">
+                <div>
+                  {p.image && (
+                    <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-xl mb-4 border border-slate-100" />
+                  )}
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <div className="min-w-0">
+                      <h3 className="text-slate-800 font-extrabold text-sm truncate">{p.name}</h3>
+                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mt-0.5">{p.category}</p>
+                    </div>
+                    <div className="flex gap-1 flex-shrink-0">
+                      <button onClick={() => openEdit(p)} className="p-1.5 text-slate-400 hover:text-amber-500 transition-colors" title="Edit product"><Edit2 size={14} /></button>
+                      <button onClick={() => handleDelete(p._id)} className="p-1.5 text-slate-400 hover:text-red-500 transition-colors" title="Delete"><Trash2 size={14} /></button>
+                    </div>
                   </div>
-                  <div className="flex gap-1 flex-shrink-0">
-                    <button onClick={() => openEdit(p)} className="p-1.5 text-slate-400 hover:text-amber-500 transition-colors"><Edit2 size={14} /></button>
-                    <button onClick={() => handleDelete(p._id)} className="p-1.5 text-slate-400 hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
-                  </div>
+                  <p className="text-slate-850 font-black text-base mb-3">KES {p.price?.toLocaleString()}</p>
                 </div>
-                <p className="text-slate-850 font-black text-base mb-3">KES {p.price?.toLocaleString()}</p>
-              </div>
 
-              <div>
-                <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold inline-block border ${p.isAvailable && p.totalStock > 0 ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-red-50 text-red-600 border-red-100'}`}>
-                  {p.isAvailable && p.totalStock > 0 ? `In Stock (${p.totalStock})` : 'Out of Stock'}
-                </span>
-                
-                {p.variants?.length > 0 && (
-                  <div className="mt-3.5 flex flex-wrap gap-1 border-t border-slate-50 pt-3">
-                    {p.variants.map((v, i) => (
-                      <span key={i} className="text-[9px] px-2 py-0.5 bg-slate-50 rounded-lg border border-slate-100 text-slate-500 font-bold">
-                        {v.size} {v.color} ({v.stock})
-                      </span>
-                    ))}
+                {/* Stock section */}
+                <div>
+                  {/* Total stock badge */}
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold inline-block border ${
+                      totalStock > 0 ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-red-50 text-red-600 border-red-100'
+                    }`}>
+                      {totalStock > 0 ? `✓ ${totalStock} units in stock` : '✗ Out of Stock'}
+                    </span>
+                    <button
+                      onClick={() => qe.open ? closeQuickEdit(p._id) : openQuickEdit(p)}
+                      className="text-[10px] font-bold text-amber-600 hover:text-amber-700 flex items-center gap-0.5 transition-colors"
+                    >
+                      <Edit2 size={10} /> {qe.open ? 'Cancel' : 'Edit Stock'}
+                    </button>
                   </div>
-                )}
+
+                  {/* Per-variant breakdown */}
+                  {!qe.open && p.variants?.length > 0 && (
+                    <div className="bg-slate-50 border border-slate-100 rounded-xl p-2.5 space-y-1">
+                      {p.variants.map((v, i) => (
+                        <div key={i} className="flex items-center justify-between text-[10px]">
+                          <span className="text-slate-500 font-semibold">
+                            {[v.size, v.color].filter(Boolean).join(' / ') || `Variant ${i + 1}`}
+                          </span>
+                          <span className={`font-black tabular-nums ${
+                            v.stock === 0 ? 'text-red-500' : v.stock < 5 ? 'text-amber-500' : 'text-emerald-600'
+                          }`}>
+                            {v.stock} units
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Quick stock edit form */}
+                  {qe.open && (
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 space-y-2">
+                      <p className="text-[10px] font-black text-amber-700 mb-2 uppercase tracking-wider">Update Stock Levels</p>
+                      {(qe.variants || []).map((v, i) => (
+                        <div key={i} className="flex items-center gap-2">
+                          <span className="text-[10px] text-slate-600 font-semibold flex-1 truncate">
+                            {[v.size, v.color].filter(Boolean).join(' / ') || `Variant ${i + 1}`}
+                          </span>
+                          <input
+                            type="number" min="0"
+                            value={v.stock}
+                            onChange={e => updateQuickVariant(p._id, i, e.target.value)}
+                            className="w-20 bg-white border border-amber-200 rounded-lg px-2 py-1 text-xs text-center font-black text-slate-800 focus:outline-none focus:border-amber-500"
+                          />
+                          <span className="text-[9px] text-slate-400">units</span>
+                        </div>
+                      ))}
+                      <button
+                        onClick={() => saveQuickStock(p)}
+                        disabled={qe.saving}
+                        className="w-full mt-1 bg-[#0a0e1a] text-white text-[10px] font-black py-1.5 rounded-lg hover:bg-black transition-colors disabled:opacity-50"
+                      >
+                        {qe.saving ? 'Saving…' : '✓ Save Stock'}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </div>

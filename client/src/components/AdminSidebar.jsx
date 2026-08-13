@@ -65,8 +65,8 @@ export default function AdminSidebar({ onClose }) {
 
   const handleLogout = async () => {
     if (onClose) onClose();
-    await logout()
     navigate('/')
+    await logout()
   }
 
   // Four-pointed star logo matching the mockup exactly
@@ -132,8 +132,8 @@ export default function AdminSidebar({ onClose }) {
         <div className="flex items-center gap-2.5 px-6 mb-8">
           <NorthstarLogo />
           <div className="leading-none">
-            <span className="text-white font-black text-sm tracking-wider block">NORTHSTAR</span>
-            <span className="text-[#8a9bb8] text-[9px] font-bold tracking-widest block mt-0.5">RETAIL CO.</span>
+            <span className="text-[#0a0e1a] font-black text-sm tracking-wider block">NORTHSTAR</span>
+            <span className="text-slate-500 text-[9px] font-bold tracking-widest block mt-0.5">RETAIL CO.</span>
           </div>
         </div>
 
@@ -142,7 +142,7 @@ export default function AdminSidebar({ onClose }) {
           {sections.map((section, sIdx) => (
             <div key={sIdx} className="space-y-1">
               {section.title && (
-                <span className="px-6 text-[10px] font-bold text-[#475569] tracking-wider block mb-2">
+                <span className="px-6 text-[10px] font-bold text-[#64748b] tracking-wider block mb-2">
                   {section.title}
                 </span>
               )}
@@ -163,11 +163,11 @@ export default function AdminSidebar({ onClose }) {
                       className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 group ${
                         isActive
                           ? 'text-[#f5c518] bg-[#f5c518]/10 font-bold'
-                          : 'text-[#94a3b8] hover:text-white hover:bg-[#1e293b]/30'
+                          : 'text-[#cbd5e1] hover:text-white hover:bg-[#1e293b]/50'
                       } ${link.disabled ? 'opacity-30 cursor-not-allowed' : ''}`}
                     >
                       <div className="flex items-center gap-3">
-                        <link.icon size={16} className={isActive ? 'text-[#f5c518]' : 'text-[#64748b] group-hover:text-white'} />
+                        <link.icon size={16} className={isActive ? 'text-[#f5c518]' : 'text-[#94a3b8] group-hover:text-white'} />
                         <span>{link.label}</span>
                       </div>
                       {link.badge !== undefined && link.badge > 0 && (

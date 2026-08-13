@@ -86,7 +86,7 @@ export default function CustomerLayout() {
     <div className="flex w-full h-screen bg-slate-50 text-slate-900 overflow-hidden relative">
       
       {/* 1. Desktop Sidebar (Sticky, persistent) */}
-      <div className="hidden lg:block flex-shrink-0">
+      <div className="hidden lg:flex flex-shrink-0 bg-[#0a0e1a]">
         <Sidebar />
       </div>
 
