@@ -34,7 +34,7 @@ export default function CustomerDashboard() {
       setOrders(o.data)
       setReturns(r.data)
       // If productsCount is fetched as an array of products
-      const count = Array.isArray(p.data) ? p.data.length : (p.data.total || p.data.products?.length || 12);
+      const count = Array.isArray(p.data) ? p.data.length : (p.data.total || p.data.products?.length || 0);
       setProductsCount(count)
     }).finally(() => setLoading(false))
   }, [])

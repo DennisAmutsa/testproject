@@ -21,11 +21,23 @@ import CustomerAccount from './pages/customer/CustomerAccount'
 import CustomerSaved from './pages/customer/CustomerSaved'
 
 // Admin dashboard
+import AdminLayout from './components/AdminLayout'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminProducts from './pages/admin/AdminProducts'
 import AdminOrders from './pages/admin/AdminOrders'
 import AdminReturns from './pages/admin/AdminReturns'
 import AdminContacts from './pages/admin/AdminContacts'
+import AdminInventory from './pages/admin/AdminInventory'
+import AdminCategories from './pages/admin/AdminCategories'
+import AdminPromotions from './pages/admin/AdminPromotions'
+import AdminCustomers from './pages/admin/AdminCustomers'
+import AdminHelpCenter from './pages/admin/AdminHelpCenter'
+import AdminAnalytics from './pages/admin/AdminAnalytics'
+import AdminReports from './pages/admin/AdminReports'
+import AdminUsers from './pages/admin/AdminUsers'
+import AdminRoles from './pages/admin/AdminRoles'
+import AdminSettings from './pages/admin/AdminSettings'
+import AdminActivity from './pages/admin/AdminActivity'
 
 // Route guards
 function RequireAuth({ children }) {
@@ -75,21 +87,28 @@ export default function App() {
           <Route path="saved" element={<CustomerSaved />} />
         </Route>
 
-        <Route path="/admin/*" element={
+        <Route path="/admin" element={
           <RequireAdmin>
-            <div className="flex-1 flex">
-              <main className="flex-1 bg-brand-navy">
-                <Routes>
-                  <Route path="/"           element={<AdminDashboard />} />
-                  <Route path="/products"  element={<AdminProducts />} />
-                  <Route path="/orders"    element={<AdminOrders />} />
-                  <Route path="/returns"   element={<AdminReturns />} />
-                  <Route path="/contacts"  element={<AdminContacts />} />
-                </Routes>
-              </main>
-            </div>
+            <AdminLayout />
           </RequireAdmin>
-        } />
+        }>
+          <Route index element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="returns" element={<AdminReturns />} />
+          <Route path="contacts" element={<AdminContacts />} />
+          <Route path="inventory" element={<AdminInventory />} />
+          <Route path="categories" element={<AdminCategories />} />
+          <Route path="promotions" element={<AdminPromotions />} />
+          <Route path="customers" element={<AdminCustomers />} />
+          <Route path="help" element={<AdminHelpCenter />} />
+          <Route path="analytics" element={<AdminAnalytics />} />
+          <Route path="reports" element={<AdminReports />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="roles" element={<AdminRoles />} />
+          <Route path="settings" element={<AdminSettings />} />
+          <Route path="activity" element={<AdminActivity />} />
+        </Route>
 
         {/* Public Routes (With public Navbar and Footer) */}
         <Route path="*" element={
