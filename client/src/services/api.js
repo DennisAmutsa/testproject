@@ -23,6 +23,9 @@ export const searchProducts = (query, category) =>
   api.get('/stock/search', { params: { query, category } });
 export const getProductStock = (productId) => api.get(`/stock/${productId}`);
 export const seedProducts = () => api.post('/stock/seed');
+export const subscribeRestockAlert = (productId, email) =>
+  api.post(`/stock/${productId}/notify`, { email });
+
 
 // Help
 export const getHelpTopics = () => api.get('/help/topics');
