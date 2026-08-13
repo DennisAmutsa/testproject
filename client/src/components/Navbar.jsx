@@ -105,41 +105,59 @@ export default function Navbar() {
           </div>
 
           {/* Mobile toggle */}
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-[#111111] p-2">
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </div>
+          <div className="relative md:hidden">
+            <button onClick={() => setMenuOpen(!menuOpen)} className="text-[#111111] p-2 focus:outline-none">
+              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
 
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <div className="md:hidden border-t border-[#111111]/10 py-4 space-y-1 animate-fade-in">
-            {navLinks.map(link => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                onClick={() => setMenuOpen(false)}
-                className={({ isActive }) =>
-                  `block px-4 py-2.5 rounded-lg text-sm font-medium ${isActive ? 'text-[#111111] bg-white/80' : 'text-[#4a4a4a] hover:text-[#111111]'}`
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
-            <div className="pt-3 border-t border-[#111111]/10 flex gap-2 px-2">
-              {user ? (
-                <>
-                  <Link to={user.role === 'admin' ? '/admin' : '/dashboard'} onClick={() => setMenuOpen(false)} className="btn-outline flex-1 justify-center text-sm py-2">Dashboard</Link>
-                  <button onClick={() => { handleLogout(); setMenuOpen(false); }} className="btn-outline flex-1 justify-center text-sm py-2 text-[#111111] border-[#111111]/20">Logout</button>
-                </>
-              ) : (
-                <>
-                  <Link to="/login" onClick={() => setMenuOpen(false)} className="btn-outline flex-1 justify-center text-sm py-2">Sign In</Link>
-                  <Link to="/signup" onClick={() => setMenuOpen(false)} className="btn-gold flex-1 justify-center text-sm py-2">Sign Up</Link>
-                </>
-              )}
-            </div>
+            {/* Mobile Menu Floating Popup */}
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-56 bg-white border border-[#111111]/15 rounded-2xl shadow-2xl p-3 z-50 animate-slide-up">
+                <div className="space-y-1">
+                  {navLinks.map(link => (
+                    <NavLink
+                      key={link.to}
+                      to={link.to}
+                      onClick={() => setMenuOpen(false)}
+                      className={({ isActive }) =>
+                        `block px-3 py-2 rounded-xl text-xs font-bold transition-all ${
+                          isActive ? 'text-[#111111] bg-[#f6f0e8]' : 'text-[#4a4a4a] hover:text-[#111111] hover:bg-slate-50'
+                        }`
+                      }
+                    >
+                      {link.label}
+                    </NavLink>
+                  ))}
+                </div>
+
+                <div className="pt-2.5 mt-2 border-t border-[#111111]/10 flex flex-col gap-1.5">
+                  {user ? (
+                    <>
+                      <Link
+                        to={user.role === 'admin' ? '/admin' : '/dashboard'}
+                        onClick={() => setMenuOpen(false)}
+                        className="btn-outline justify-center text-xs py-2 w-full"
+                      >
+                        Dashboard
+                      </Link>
+                      <button
+                        onClick={() => { handleLogout(); setMenuOpen(false); }}
+                        className="btn-outline justify-center text-xs py-2 w-full text-red-600 border-red-200 hover:bg-red-50"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Link to="/login" onClick={() => setMenuOpen(false)} className="btn-outline flex-1 justify-center text-xs py-2">Sign In</Link>
+                      <Link to="/signup" onClick={() => setMenuOpen(false)} className="btn-gold flex-1 justify-center text-xs py-2">Sign Up</Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </nav>
   )
