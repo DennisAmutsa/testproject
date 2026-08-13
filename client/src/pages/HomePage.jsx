@@ -312,12 +312,12 @@ export default function HomePage() {
       )}
 
       {/* Popular help topics */}
-      <section className="pb-20 bg-brand-navy">
+      <section className="pb-20 bg-[#f6f0e8]">
         <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            <div className="lg:col-span-2 border border-brand-border rounded-2xl p-6 bg-brand-navy">
-              <h2 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
+            <div className="lg:col-span-2 border border-[#111111]/15 rounded-2xl p-6 bg-white shadow-sm">
+              <h2 className="text-[#111111] font-bold text-lg mb-6 flex items-center gap-2">
                 Popular Help Topics
               </h2>
               {helpTopics.length === 0 ? (
@@ -332,9 +332,9 @@ export default function HomePage() {
                     <Link
                       key={topic.id}
                       to={topic.link}
-                      className="flex items-center justify-between py-3 border-b border-[#111111]/10 hover:bg-[#f6f5f3] rounded-lg px-2 group transition-all"
+                      className="flex items-center justify-between py-3 border-b border-[#111111]/10 hover:bg-[#f6f0e8] rounded-lg px-2 group transition-all"
                     >
-                      <span className="text-[#4a4a4a] text-sm group-hover:text-[#111111] transition-colors">
+                      <span className="text-[#111111] font-medium text-sm group-hover:text-black transition-colors">
                         {topic.question}
                       </span>
                       <ChevronRight size={14} className="text-[#4a4a4a] group-hover:text-[#111111]" />
