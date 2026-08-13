@@ -76,7 +76,57 @@ router.get('/', protect, adminOnly, async (req, res) => {
   } catch (e) { res.status(500).json({ message: e.message }); }
 });
 
-// Admin - create order
+// Customer/Public - place a new order
+router.post('/place', async (req, res) => {
+  try {
+    const { customerEmail, customerName, items } = req.body;
+    if (!customerEmail || !customerName || !items?.length) {
+      return res.status(400).json({ message: 'Name, email, and items are required.' });
+    }
+
+    // Generate unique Order ID e.g. ORD-84920
+    const randomNum = Math.floor(10000 + Math.random() * 90000);
+    const orderId = `ORD-${randomNum}`;
+
+    // Calculate delivery date (3 days from now)
+    const estimatedDelivery = new Date();
+    estimatedDelivery.setDate(estimatedDelivery.getDate() + 3);
+
+    // Process stock deduction for each item
+    for (const item of items) {
+      if (item.productId) {
+        const product = await Product.findOne({ productId: item.productId });
+        if (product && product.variants?.length) {
+          const v = product.variants.find(varItem => varItem.size === item.size || varItem.color === item.color);
+          if (v && v.stock >= (item.quantity || 1)) {
+            v.stock -= (item.quantity || 1);
+            product.totalStock = product.variants.reduce((sum, curr) => sum + (curr.stock || 0), 0);
+            product.isAvailable = product.totalStock > 0;
+            await product.save();
+          }
+        }
+      }
+    }
+
+    const newOrder = await Order.create({
+      orderId,
+      customerEmail: customerEmail.toLowerCase().trim(),
+      customerName,
+      items,
+      estimatedDelivery,
+      status: 'processing'
+    });
+
+    res.status(201).json({
+      message: 'Order placed successfully!',
+      order: newOrder
+    });
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+// Admin - create order manually
 router.post('/', protect, adminOnly, async (req, res) => {
   try {
     const { orderId, customerEmail, customerName, items, estimatedDelivery } = req.body;

@@ -10,6 +10,7 @@ const api = axios.create({
 // Orders
 export const getOrderById = (orderId) => api.get(`/orders/${orderId}`);
 export const getOrdersByEmail = (email) => api.get(`/orders/email/${email}`);
+export const placeOrder = (orderData) => api.post('/orders/place', orderData);
 export const seedOrders = () => api.post('/orders/seed');
 
 // Returns
