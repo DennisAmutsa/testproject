@@ -65,7 +65,7 @@ export default function AdminSidebar({ onClose }) {
 
   const handleLogout = async () => {
     if (onClose) onClose();
-    navigate('/')
+    navigate('/landing')
     await logout()
   }
 

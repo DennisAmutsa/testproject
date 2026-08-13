@@ -58,9 +58,10 @@ function RedirectIfLoggedIn({ children }) {
   return children
 }
 
-// Home route auto-redirect wrapper
+// Home route auto-redirect wrapper (for normal '/' visits)
 function HomeWrapper() {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
+  if (loading) return null  // wait — don't redirect during auth check
   if (user) {
     return <Navigate to={user.role === 'admin' ? '/admin' : '/dashboard'} replace />
   }
@@ -117,6 +118,7 @@ export default function App() {
             <div className="flex-1">
               <Routes>
                 <Route path="/"        element={<HomeWrapper />} />
+                <Route path="/landing"  element={<HomePage />} />
                 <Route path="/orders"  element={<CustomerOrders />} />
                 <Route path="/returns" element={<CustomerReturns />} />
                 <Route path="/about"   element={<AboutPage />} />

@@ -27,7 +27,7 @@ export default function AdminLayout() {
 
   const handleLogout = async () => {
     setDropdownOpen(false)
-    navigate('/')
+    navigate('/landing')
     await logout()
   }
 

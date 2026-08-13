@@ -6,11 +6,12 @@ const generateToken = (id) =>
 
 const sendToken = (res, user, statusCode) => {
   const token = generateToken(user._id);
+  const isProd = process.env.NODE_ENV === 'production';
   res.cookie('token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 100 * 365 * 24 * 60 * 60 * 1000, // 100 years (effectively never expires)
+    secure: isProd,                      // HTTPS only in production
+    sameSite: isProd ? 'none' : 'lax',  // cross-origin in prod, same-site in dev
+    maxAge: 100 * 365 * 24 * 60 * 60 * 1000, // 100 years
   });
   res.status(statusCode).json({
     _id: user._id,
@@ -54,7 +55,13 @@ export const login = async (req, res) => {
 
 // POST /api/auth/logout
 export const logout = (req, res) => {
-  res.cookie('token', '', { httpOnly: true, expires: new Date(0) });
+  const isProd = process.env.NODE_ENV === 'production';
+  res.cookie('token', '', {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
+    expires: new Date(0),
+  });
   res.json({ message: 'Logged out successfully.' });
 };
 

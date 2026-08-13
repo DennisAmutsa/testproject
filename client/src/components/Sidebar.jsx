@@ -57,7 +57,7 @@ export default function Sidebar({ onClose }) {
 
   const handleLogout = async () => {
     if (onClose) onClose();
-    navigate('/')
+    navigate('/landing')
     await logout()
   }
 
