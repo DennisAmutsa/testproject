@@ -42,32 +42,32 @@ export default function HelpPage() {
   ]
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in text-slate-900">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-white mb-2">How can we help?</h1>
-        <p className="text-brand-muted">Search our knowledge base or browse popular topics below.</p>
+        <h1 className="text-3xl font-black text-slate-900 mb-2">How can we help?</h1>
+        <p className="text-slate-600 font-semibold text-sm">Search our knowledge base or browse popular topics below.</p>
       </div>
 
       {/* Search */}
       <form onSubmit={handleSearch} className="flex gap-3 mb-8">
         <div className="relative flex-1">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
           <input type="text" placeholder="Search help articles…" value={query}
-            onChange={e => { setQuery(e.target.value); setResults(null) }} className="input-field pl-12" />
+            onChange={e => { setQuery(e.target.value); setResults(null) }} className="w-full bg-white border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-400 shadow-sm" />
         </div>
-        <button type="submit" disabled={searching} className="btn-gold px-6 whitespace-nowrap">
+        <button type="submit" disabled={searching} className="bg-[#0a0e1a] text-[#f5c518] font-black px-6 py-3 rounded-xl hover:bg-black transition-colors text-xs shadow-md whitespace-nowrap">
           {searching ? 'Searching…' : 'Search'}
         </button>
       </form>
 
       {results !== null && (
-        <div className="card mb-8 animate-slide-up">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 mb-8 shadow-sm animate-slide-up">
           {results.length === 0
-            ? <p className="text-brand-muted text-sm">No results. Try <Link to="/contact" className="text-brand-gold hover:underline">contacting us</Link>.</p>
+            ? <p className="text-slate-600 text-sm font-medium">No results. Try <Link to="/contact" className="text-amber-600 font-bold hover:underline">contacting us</Link>.</p>
             : <ul>{results.map(r => (
                 <li key={r.id}>
-                  <Link to={r.link} className="flex items-center justify-between py-2.5 text-white hover:text-brand-gold text-sm">
-                    <span>{r.question}</span><ChevronRight size={14} className="text-brand-muted" />
+                  <Link to={r.link} className="flex items-center justify-between py-2.5 text-slate-900 font-bold hover:text-amber-600 text-sm border-b border-slate-100 last:border-0">
+                    <span>{r.question}</span><ChevronRight size={14} className="text-slate-400" />
                   </Link>
                 </li>
               ))}</ul>
@@ -78,40 +78,40 @@ export default function HelpPage() {
       {/* Quick links */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
         {quickLinks.map(({ icon: Icon, label, to }) => (
-          <Link key={to} to={to} className="card text-center hover:-translate-y-1 transition-all duration-200 group">
-            <div className="w-10 h-10 bg-brand-gold/15 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:bg-brand-gold/25 transition-colors">
-              <Icon size={18} className="text-brand-gold" />
+          <Link key={to} to={to} className="bg-white border border-slate-200 rounded-2xl p-5 text-center hover:-translate-y-1 transition-all duration-200 group shadow-sm">
+            <div className="w-10 h-10 bg-amber-50 border border-amber-100 rounded-xl flex items-center justify-center mx-auto mb-2 group-hover:bg-amber-100 transition-colors">
+              <Icon size={18} className="text-amber-600" />
             </div>
-            <p className="text-white text-xs font-medium">{label}</p>
+            <p className="text-slate-900 text-xs font-extrabold">{label}</p>
           </Link>
         ))}
       </div>
 
       {/* Popular Topics */}
-      <div className="card mb-8">
-        <h2 className="text-white font-bold text-lg mb-4">Popular Topics</h2>
-        <div className="grid sm:grid-cols-2 gap-1">
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-8 shadow-sm">
+        <h2 className="text-slate-900 font-black text-lg mb-4">Popular Topics</h2>
+        <div className="grid sm:grid-cols-2 gap-2">
           {topics.map(t => (
-            <Link key={t.id} to={t.link} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-brand-border/50 text-sm text-white hover:text-brand-gold group transition-colors">
-              <span>{t.question}</span><ChevronRight size={14} className="text-brand-muted group-hover:text-brand-gold" />
+            <Link key={t.id} to={t.link} className="flex items-center justify-between px-3.5 py-3 rounded-xl hover:bg-slate-50 text-xs font-bold text-slate-800 hover:text-amber-600 group transition-colors border border-slate-100">
+              <span>{t.question}</span><ChevronRight size={14} className="text-slate-400 group-hover:text-amber-600" />
             </Link>
           ))}
         </div>
       </div>
 
       {/* FAQ */}
-      <div className="card">
-        <h2 className="text-white font-bold text-lg mb-4">Frequently Asked Questions</h2>
-        <div className="space-y-2">
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <h2 className="text-slate-900 font-black text-lg mb-4">Frequently Asked Questions</h2>
+        <div className="space-y-3">
           {FAQS.map((faq, i) => (
-            <div key={i} className="border border-brand-border rounded-xl overflow-hidden">
+            <div key={i} className="border border-slate-200 rounded-xl overflow-hidden">
               <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                className="w-full flex items-center justify-between px-4 py-3 text-left text-white text-sm font-medium hover:bg-brand-border/30 transition-colors">
+                className="w-full flex items-center justify-between px-4 py-3 text-left text-slate-900 text-xs font-extrabold hover:bg-slate-50 transition-colors">
                 <span>{faq.q}</span>
-                <ChevronRight size={14} className={`text-brand-muted transition-transform ${openFaq === i ? 'rotate-90' : ''}`} />
+                <ChevronRight size={14} className={`text-slate-400 transition-transform ${openFaq === i ? 'rotate-90 text-amber-600' : ''}`} />
               </button>
               {openFaq === i && (
-                <div className="px-4 pb-4 text-brand-muted text-sm leading-relaxed border-t border-brand-border pt-3 animate-fade-in">
+                <div className="px-4 pb-4 text-slate-600 text-xs font-medium leading-relaxed border-t border-slate-100 pt-3 animate-fade-in bg-slate-50/50">
                   {faq.a}
                 </div>
               )}
