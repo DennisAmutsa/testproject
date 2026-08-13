@@ -23,6 +23,24 @@ router.get('/my', protect, async (req, res) => {
   } catch (e) { res.status(500).json({ message: e.message }); }
 });
 
+// Public - get own orders by email
+router.get('/email/:email', async (req, res) => {
+  try {
+    const orders = await Order.find({ customerEmail: req.params.email }).sort({ createdAt: -1 }).lean();
+    for (const order of orders) {
+      if (order.items) {
+        for (const item of order.items) {
+          const prod = await Product.findOne({ name: item.name });
+          if (prod) {
+            item.image = prod.image;
+          }
+        }
+      }
+    }
+    res.json(orders);
+  } catch (e) { res.status(500).json({ message: e.message }); }
+});
+
 // Public - track by orderId
 router.get('/:orderId', async (req, res) => {
   try {

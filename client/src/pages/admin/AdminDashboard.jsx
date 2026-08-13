@@ -13,7 +13,8 @@ import {
   AlertTriangle,
   Clock,
   Sparkles,
-  ClipboardList
+  ClipboardList,
+  DollarSign
 } from 'lucide-react'
 import api from '../../services/api'
 
@@ -155,17 +156,17 @@ export default function AdminDashboard() {
       {/* 6 Grid Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {[
-          { label: 'Total Sales', value: formatCurrency(totalSales), sub: '+12.4% this month', subColor: 'text-emerald-500', icon: '💰' },
-          { label: 'Total Orders', value: orders.length, sub: `+8.2% this month`, subColor: 'text-emerald-500', icon: '📦' },
-          { label: 'Customers', value: customersCount, sub: '+5.7% this month', subColor: 'text-emerald-500', icon: '👤' },
-          { label: 'Products', value: products.length, sub: `${lowStockCount} low stock`, subColor: 'text-amber-500', icon: '🛍️' },
-          { label: 'Returns', value: returns.length, sub: `${pendingReturnsCount} pending`, subColor: 'text-amber-500', icon: '🔄' },
-          { label: 'Support Tickets', value: contacts.length, sub: `${unresolvedTicketsCount} unresolved`, subColor: 'text-amber-500', icon: '💬' }
+          { label: 'Total Sales', value: formatCurrency(totalSales), sub: '+12.4% this month', subColor: 'text-emerald-500', icon: DollarSign },
+          { label: 'Total Orders', value: orders.length, sub: `+8.2% this month`, subColor: 'text-emerald-500', icon: ShoppingBag },
+          { label: 'Customers', value: customersCount, sub: '+5.7% this month', subColor: 'text-emerald-500', icon: Users },
+          { label: 'Products', value: products.length, sub: `${lowStockCount} low stock`, subColor: 'text-amber-500', icon: Package },
+          { label: 'Returns', value: returns.length, sub: `${pendingReturnsCount} pending`, subColor: 'text-amber-500', icon: RotateCcw },
+          { label: 'Support Tickets', value: contacts.length, sub: `${unresolvedTicketsCount} unresolved`, subColor: 'text-amber-500', icon: MessageSquare }
         ].map((item, idx) => (
           <div key={idx} className="bg-white border border-slate-100 p-4 rounded-2xl shadow-sm space-y-1">
             <div className="flex items-center justify-between text-slate-400">
               <span className="text-[10px] font-black uppercase tracking-wider">{item.label}</span>
-              <span className="text-sm">{item.icon}</span>
+              <item.icon size={14} className="text-slate-400 flex-shrink-0" />
             </div>
             <p className="text-base font-extrabold text-slate-800 tracking-tight">{loading ? '…' : item.value}</p>
             <p className={`text-[9px] font-bold ${item.subColor}`}>{item.sub}</p>
@@ -288,7 +289,7 @@ export default function AdminDashboard() {
           
           {/* Inventory Alerts */}
           <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm space-y-4">
-            <h3 className="text-sm font-extrabold text-slate-800">⚠️ Inventory Alerts</h3>
+            <h3 className="text-sm font-extrabold text-slate-800">Inventory Alerts</h3>
             
             <div className="flex items-center justify-between p-3 rounded-xl bg-red-50 border border-red-100">
               <div>
@@ -310,7 +311,7 @@ export default function AdminDashboard() {
           {/* Support Tickets overview */}
           <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-extrabold text-slate-800">💬 Customer Support</h3>
+              <h3 className="text-sm font-extrabold text-slate-800">Customer Support</h3>
               <Link to="/admin/contacts" className="text-blue-600 text-xs font-bold hover:underline">View All</Link>
             </div>
 

@@ -41,49 +41,42 @@ export default function CustomerLayout() {
     if (path === '/dashboard' || path === '/dashboard/') {
       return {
         title: `Hello, ${user?.name ? user.name.split(' ')[0] : 'Dennis'}!`,
-        subtitle: 'Welcome to your Northstar Retail support dashboard.',
-        emoji: '👋'
+        subtitle: 'Welcome to your Northstar Retail support dashboard.'
       };
     }
     if (path.includes('/orders')) {
       return {
         title: 'My Orders',
-        subtitle: 'Track, manage and view your order history.',
-        emoji: '📦'
+        subtitle: 'Track, manage and view your order history.'
       };
     }
     if (path.includes('/returns')) {
       return {
         title: 'My Returns',
-        subtitle: 'Manage your return and refund requests.',
-        emoji: '🔄'
+        subtitle: 'Manage your return and refund requests.'
       };
     }
     if (path.includes('/stock')) {
       return {
         title: 'Stock Availability',
-        subtitle: 'Browse current stock levels of our product catalog.',
-        emoji: '🛍️'
+        subtitle: 'Browse current stock levels of our product catalog.'
       };
     }
     if (path.includes('/account')) {
       return {
         title: 'My Account',
-        subtitle: 'View and manage your profile details.',
-        emoji: '👤'
+        subtitle: 'View and manage your profile details.'
       };
     }
     if (path.includes('/saved')) {
       return {
         title: 'Saved Items',
-        subtitle: 'Your favorite and bookmarked items.',
-        emoji: '❤️'
+        subtitle: 'Your favorite and bookmarked items.'
       };
     }
     return {
       title: 'Northstar Support',
-      subtitle: 'Need help? Contact support or browse solutions.',
-      emoji: '⭐'
+      subtitle: 'Need help? Contact support or browse solutions.'
     };
   };
 
@@ -133,9 +126,6 @@ export default function CustomerLayout() {
               <Menu size={20} />
             </button>
 
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#f5c518]/10 flex items-center justify-center text-lg flex-shrink-0">
-              {header.emoji}
-            </div>
             <div>
               <h1 className="text-sm sm:text-base font-extrabold text-slate-900 leading-tight">
                 {header.title}

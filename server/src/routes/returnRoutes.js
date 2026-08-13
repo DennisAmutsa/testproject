@@ -23,6 +23,14 @@ router.get('/my', protect, async (req, res) => {
   } catch (e) { res.status(500).json({ message: e.message }); }
 });
 
+// Public - get returns by email
+router.get('/email/:email', async (req, res) => {
+  try {
+    const returns = await Return.find({ customerEmail: req.params.email }).sort({ createdAt: -1 });
+    res.json(returns);
+  } catch (e) { res.status(500).json({ message: e.message }); }
+});
+
 // Customer - submit return
 router.post('/', protect, async (req, res) => {
   try {

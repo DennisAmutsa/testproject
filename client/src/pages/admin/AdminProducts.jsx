@@ -14,6 +14,7 @@ export default function AdminProducts() {
   const [saving, setSaving]         = useState(false)
   const [error, setError]           = useState('')
   const [filterCat, setFilterCat]   = useState('')
+  const [filterStock, setFilterStock] = useState('')
 
   const fetchProducts = () =>
     api.get('/stock', { params: filterCat ? { category: filterCat } : {} })
@@ -116,7 +117,7 @@ export default function AdminProducts() {
       {showForm && (
         <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-md mb-8 animate-slide-up">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-            <h2 className="text-slate-800 font-extrabold text-base">{editing ? '✏️ Edit Product' : '✨ New Product'}</h2>
+            <h2 className="text-slate-800 font-extrabold text-base">{editing ? 'Edit Product' : 'New Product'}</h2>
             <button onClick={() => setShowForm(false)} className="text-slate-400 hover:text-slate-600 p-1"><X size={18} /></button>
           </div>
           {error && <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-semibold">{error}</div>}

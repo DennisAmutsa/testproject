@@ -43,43 +43,37 @@ export default function AdminLayout() {
         greeting = 'Good evening';
       }
       return {
-        title: `${greeting}, ${user?.name ? user.name.split(' ')[0] : 'Dennis'} 👋`,
-        subtitle: "Here's what's happening across Northstar today.",
-        emoji: '📈'
+        title: `${greeting}, ${user?.name ? user.name.split(' ')[0] : 'Dennis'}`,
+        subtitle: "Here's what's happening across Northstar today."
       };
     }
     if (path.includes('/orders')) {
       return {
         title: 'Manage Orders',
-        subtitle: 'View, fulfill, and update orders from customers.',
-        emoji: '📦'
+        subtitle: 'View, fulfill, and update orders from customers.'
       };
     }
     if (path.includes('/products')) {
       return {
         title: 'Manage Products',
-        subtitle: 'Add, edit, or remove catalog items.',
-        emoji: '🛍️'
+        subtitle: 'Add, edit, or remove catalog items.'
       };
     }
     if (path.includes('/returns')) {
       return {
         title: 'Manage Returns & Refunds',
-        subtitle: 'Process return requests and refunds.',
-        emoji: '🔄'
+        subtitle: 'Process return requests and refunds.'
       };
     }
     if (path.includes('/contacts')) {
       return {
         title: 'Support Tickets',
-        subtitle: 'Respond to customer support contact queries.',
-        emoji: '💬'
+        subtitle: 'Respond to customer support contact queries.'
       };
     }
     return {
       title: 'Northstar Admin Panel',
-      subtitle: 'System management tools.',
-      emoji: '⚙️'
+      subtitle: 'System management tools.'
     };
   };
 
