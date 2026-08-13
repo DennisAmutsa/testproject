@@ -117,6 +117,16 @@ router.post('/place', async (req, res) => {
       status: 'processing'
     });
 
+    // Send email notifications asynchronously (non-blocking)
+    (async () => {
+      try {
+        const { sendNewOrderEmail } = await import('../config/email.js');
+        await sendNewOrderEmail(newOrder);
+      } catch (err) {
+        console.error("Order notification trigger error:", err.message);
+      }
+    })();
+
     res.status(201).json({
       message: 'Order placed successfully!',
       order: newOrder
