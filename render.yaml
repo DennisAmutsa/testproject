@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: northstar-server
+    env: node
+    region: oregon
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node src/server.js
+    envVars:
+      - key: MONGO_URI
+        value: mongodb+srv://amutsaamutsa_db_user:yl7RApalrMt2uCkm@cluster0.msx2jpg.mongodb.net/northstar?appName=Cluster0
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        value: northstar_super_secret_jwt_key_2024
+      - key: JWT_EXPIRES_IN
+        value: 36500d
+      - key: CLIENT_URL
+        value: https://your-app-name.vercel.app

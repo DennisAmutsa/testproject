@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, Package, RotateCcw, Box, ChevronRight, Headphones, ArrowRight, Mail, AlertCircle, Clock, Truck, ShieldCheck, HelpCircle } from 'lucide-react'
+import { Search, Package, RotateCcw, Box, ChevronRight, Headphones, ArrowRight, Mail, AlertCircle, Clock, Truck, ShieldCheck, HelpCircle, XCircle } from 'lucide-react'
 import { getHelpTopics, searchHelp, getOrdersByEmail, getReturnsByEmail } from '../services/api'
 import heroImg from '../assets/hero.png'
 
@@ -89,87 +89,74 @@ export default function HomePage() {
     <div className="bg-[#f6f0e8] min-h-screen text-[#111111] animate-fade-in pb-16">
 
       {/* Hero section */}
-      <section className="relative overflow-hidden border-b border-[#111111]/10 bg-[#f6f0e8]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24 py-12 lg:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            {/* Left Content */}
-            <div>
-              <p className="text-[#111111] font-bold text-xs uppercase tracking-[0.25em] mb-3">
-                Welcome to Northstar Support
-              </p>
-              <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-extrabold text-[#111111] leading-[1.1] mb-5 tracking-tight">
-                Get Help, <span className="text-[#111111] italic">Instantly.</span>
-              </h1>
-              <p className="text-[#4a4a4a] text-sm sm:text-base leading-relaxed mb-8 max-w-lg">
-                Find answers about your orders, returns, refunds and product availability — without waiting for customer support.
-              </p>
+      <section className="bg-[#f6f0e8] py-14 lg:py-24">
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24">
+          <div className="max-w-3xl mx-auto text-center flex flex-col items-center">
+            <p className="text-[#111111] font-bold text-xs uppercase tracking-[0.25em] mb-3">
+              Welcome to Northstar Support
+            </p>
 
-              {/* Search bar */}
-              <form onSubmit={handleSearch} className="flex gap-0 mb-4 max-w-lg border border-[#111111]/15 rounded-xl bg-white overflow-hidden shadow-sm">
-                <div className="relative flex-1">
-                  <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#4a4a4a]" />
-                  <input
-                    type="text"
-                    placeholder='Search for help, e.g. "Where is my order?"'
-                    value={searchQuery}
-                    onChange={e => { setSearchQuery(e.target.value); setSearchResults(null) }}
-                    className="w-full bg-transparent px-4 py-3.5 pl-11 text-[#111111] placeholder-[#666666] focus:outline-none text-sm"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={searching}
-                  className="bg-[#111111] text-white font-bold px-6 py-3.5 hover:bg-[#2a2a2a] transition-all text-sm whitespace-nowrap"
-                >
-                  {searching ? '…' : 'Search'}
-                </button>
-              </form>
+            <h1 className="text-4xl sm:text-5xl lg:text-[72px] font-extrabold text-[#111111] leading-[0.95] tracking-[-0.05em] mb-5">
+              Get Help, <span className="inline-block text-[#111111]">Instantly.</span>
+            </h1>
 
-              {/* Popular queries */}
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-[#4a4a4a] text-xs font-semibold">Popular:</span>
-                {popularQueries.map(q => (
-                  <button
-                    key={q}
-                    onClick={() => setSearchQuery(q)}
-                    className="px-3 py-1 rounded-full border border-[#111111]/15 text-[#4a4a4a] text-xs hover:border-[#111111]/25 hover:text-[#111111] transition-all"
-                  >
-                    {q}
-                  </button>
-                ))}
+            <p className="text-[#4a4a4a] text-sm sm:text-base lg:text-[18px] leading-relaxed mb-8 max-w-2xl">
+              Find answers about your orders, returns, refunds and product availability — without waiting for customer support.
+            </p>
+
+            <form onSubmit={handleSearch} className="flex gap-0 mb-4 w-full max-w-xl border border-[#111111]/15 rounded-xl bg-white overflow-hidden shadow-sm">
+              <div className="relative flex-1">
+                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#4a4a4a]" />
+                <input
+                  type="text"
+                  placeholder='Search for help, e.g. "Where is my order?"'
+                  value={searchQuery}
+                  onChange={e => { setSearchQuery(e.target.value); setSearchResults(null) }}
+                  className="w-full bg-transparent px-4 py-3.5 pl-11 text-[#111111] placeholder-[#666666] focus:outline-none text-sm"
+                />
               </div>
+              <button
+                type="submit"
+                disabled={searching}
+                className="bg-[#111111] text-white font-bold px-6 py-3.5 hover:bg-[#2a2a2a] transition-all text-sm whitespace-nowrap"
+              >
+                {searching ? '…' : 'Search'}
+              </button>
+            </form>
 
-              {/* Search Results */}
-              {searchResults !== null && (
-                <div className="mt-5 bg-white border border-[#111111]/15 rounded-2xl p-4 max-w-lg animate-slide-up">
-                  {searchResults.length === 0 ? (
-                    <p className="text-[#4a4a4a] text-sm">
-                      No results. Try <Link to="/contact" className="text-[#111111] hover:underline">contacting support</Link>.
-                    </p>
-                  ) : (
-                    <ul>
-                      {searchResults.map(r => (
-                        <li key={r.id}>
-                          <Link to={r.link} className="flex items-center justify-between py-2.5 text-[#111111] hover:text-[#333333] text-sm border-b border-[#111111]/10 last:border-0">
-                             <span>{r.question}</span>
-                             <ChevronRight size={14} className="text-[#4a4a4a]" />
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              )}
+            <div className="flex flex-wrap gap-2 items-center justify-center">
+              <span className="text-[#4a4a4a] text-xs font-semibold">Popular:</span>
+              {popularQueries.map(q => (
+                <button
+                  key={q}
+                  onClick={() => setSearchQuery(q)}
+                  className="px-3 py-1 rounded-full border border-[#111111]/15 text-[#4a4a4a] text-xs hover:border-[#111111]/25 hover:text-[#111111] transition-all bg-white/60"
+                >
+                  {q}
+                </button>
+              ))}
             </div>
 
-            {/* Right Hero Image Card */}
-            <div className="relative rounded-2xl overflow-hidden shadow-lg border border-[#111111]/10 h-[300px] sm:h-[380px] lg:h-[420px]">
-              <img
-                src={heroImg}
-                alt="Customer support hero"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            {searchResults !== null && (
+              <div className="mt-5 w-full bg-white border border-[#111111]/15 rounded-2xl p-4 max-w-xl animate-slide-up text-left shadow-lg">
+                {searchResults.length === 0 ? (
+                  <p className="text-[#4a4a4a] text-sm">
+                    No results. Try <Link to="/contact" className="text-[#111111] font-semibold hover:underline">contacting support</Link>.
+                  </p>
+                ) : (
+                  <ul>
+                    {searchResults.map(r => (
+                      <li key={r.id}>
+                        <Link to={r.link} className="flex items-center justify-between py-2.5 text-[#111111] hover:text-[#333333] text-sm border-b border-[#111111]/10 last:border-0">
+                          <span>{r.question}</span>
+                          <ChevronRight size={14} className="text-[#4a4a4a]" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>

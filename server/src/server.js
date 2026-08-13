@@ -14,7 +14,20 @@ const app = express();
 
 connectDB();
 
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+const rawClientUrls = process.env.CLIENT_URL || 'http://localhost:5173';
+const allowedOrigins = rawClientUrls.split(',').map(url => url.trim().replace(/\/$/, ''));
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    const cleanOrigin = origin.replace(/\/$/, '');
+    if (allowedOrigins.includes(cleanOrigin) || allowedOrigins.includes('*') || cleanOrigin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    return callback(null, true); // Fallback to allow client requests
+  },
+  credentials: true
+}));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
