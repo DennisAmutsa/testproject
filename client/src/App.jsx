@@ -42,12 +42,12 @@ import AdminActivity from './pages/admin/AdminActivity'
 // Route guards
 function RequireAuth({ children }) {
   const { user, loading } = useAuth()
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-brand-navy"><div className="animate-spin w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full" /></div>
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-[#f6f0e8]"><div className="animate-spin w-8 h-8 border-2 border-[#111111] border-t-transparent rounded-full" /></div>
   return user ? children : <Navigate to="/login" replace />
 }
 function RequireAdmin({ children }) {
   const { user, loading } = useAuth()
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-brand-navy"><div className="animate-spin w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full" /></div>
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-[#f6f0e8]"><div className="animate-spin w-8 h-8 border-2 border-[#111111] border-t-transparent rounded-full" /></div>
   if (!user) return <Navigate to="/login" replace />
   return user.role === 'admin' ? children : <Navigate to="/dashboard" replace />
 }
@@ -71,7 +71,7 @@ export default function App() {
   const { user } = useAuth()
   
   return (
-    <div className="min-h-screen flex flex-col bg-brand-navy">
+    <div className="min-h-screen flex flex-col bg-[#f6f0e8]">
       <Routes>
         {/* Dashboard/Admin Routes (No public Navbar/Footer, they will render their own sidebars) */}
         <Route path="/dashboard" element={

@@ -171,7 +171,7 @@ export default function Sidebar({ onClose }) {
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-emerald-400 font-medium">Online</span>
           </p>
-          <NavLink to="/contact" className="w-full py-2 bg-[#f5c518] text-[#0a0e1a] font-extrabold text-[10px] rounded-lg hover:bg-[#e6b400] transition-colors flex items-center justify-center gap-1">
+          <NavLink to="/contact" className="w-full py-2 bg-slate-800 text-white font-extrabold text-[10px] rounded-lg hover:bg-slate-700 transition-colors flex items-center justify-center gap-1 border border-slate-700">
             Contact Support &rarr;
           </NavLink>
         </div>

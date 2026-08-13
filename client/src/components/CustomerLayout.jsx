@@ -83,7 +83,7 @@ export default function CustomerLayout() {
   const header = getHeaderDetails();
 
   return (
-    <div className="flex w-full h-screen bg-[#f8fafc] text-slate-800 overflow-hidden relative">
+    <div className="flex w-full h-screen bg-slate-50 text-slate-900 overflow-hidden relative">
       
       {/* 1. Desktop Sidebar (Sticky, persistent) */}
       <div className="hidden lg:block flex-shrink-0">
@@ -100,7 +100,7 @@ export default function CustomerLayout() {
           />
           
           {/* Drawer content */}
-          <div className="relative flex flex-col w-[260px] max-w-xs bg-[#0a0e1a] animate-slide-right shadow-2xl z-50">
+          <div className="relative flex flex-col w-[260px] max-w-xs bg-slate-900 animate-slide-right shadow-2xl z-50">
             {/* Close button */}
             <button 
               onClick={() => setMobileOpen(false)}
@@ -116,12 +116,12 @@ export default function CustomerLayout() {
       {/* 3. Main content body */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden h-full">
         {/* Top Header */}
-        <header className="bg-white border-b border-slate-100 px-4 sm:px-8 py-4 flex items-center justify-between z-10 flex-shrink-0 select-none">
+        <header className="bg-white border-b border-slate-200 px-4 sm:px-8 py-4 flex items-center justify-between z-10 flex-shrink-0 select-none shadow-sm">
           <div className="flex items-center gap-3">
             {/* Hamburger menu button for small screens */}
             <button 
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-xl focus:outline-none"
+              className="lg:hidden p-2 -ml-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl focus:outline-none"
             >
               <Menu size={20} />
             </button>
@@ -130,7 +130,7 @@ export default function CustomerLayout() {
               <h1 className="text-sm sm:text-base font-extrabold text-slate-900 leading-tight">
                 {header.title}
               </h1>
-              <p className="text-slate-500 text-[10px] sm:text-xs mt-0.5 font-semibold hidden sm:block">
+              <p className="text-slate-500 text-[10px] sm:text-xs mt-0.5 font-medium hidden sm:block">
                 {header.subtitle}
               </p>
             </div>

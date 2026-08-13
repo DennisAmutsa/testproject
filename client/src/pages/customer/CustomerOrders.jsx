@@ -34,12 +34,12 @@ export default function CustomerOrders() {
   const statusClass = (s) => `status-${s}`
 
   const OrderCard = ({ order }) => (
-    <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm mb-4 text-slate-800">
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-4 text-slate-900 hover:border-slate-300 transition-all">
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
         <div>
-          <p className="text-slate-800 font-extrabold">{order.orderId}</p>
-          <p className="text-slate-500 text-sm font-semibold">{order.customerName} · {order.customerEmail}</p>
-          <p className="text-slate-400 text-xs font-semibold mt-0.5">{new Date(order.createdAt).toLocaleDateString()}</p>
+          <p className="text-stone-900 font-extrabold">{order.orderId}</p>
+          <p className="text-stone-600 text-sm font-medium">{order.customerName} · {order.customerEmail}</p>
+          <p className="text-stone-400 text-xs font-medium mt-0.5">{new Date(order.createdAt).toLocaleDateString()}</p>
         </div>
         <span className={statusClass(order.status)}>{order.status.replace(/_/g, ' ')}</span>
       </div>

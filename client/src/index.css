@@ -5,51 +5,112 @@
 @layer base {
   * { box-sizing: border-box; }
   body {
-    @apply bg-brand-navy text-white font-sans antialiased;
+    @apply bg-[#f6f0e8] text-[#111111] font-sans antialiased;
     margin: 0;
   }
   ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { @apply bg-brand-dark; }
-  ::-webkit-scrollbar-thumb { @apply bg-brand-border rounded-full; }
+  ::-webkit-scrollbar-track { @apply bg-[#f6f0e8]; }
+  ::-webkit-scrollbar-thumb { @apply bg-[#d9cfc2] rounded-full; }
 }
 
 @layer components {
   .btn-gold {
-    @apply bg-brand-gold text-brand-navy font-semibold px-6 py-2.5 rounded-lg
-           hover:bg-brand-gold-hover transition-all duration-200 
-           active:scale-95 inline-flex items-center gap-2 cursor-pointer;
+    @apply bg-[#111111] text-white font-bold px-6 py-2.5 rounded-xl
+           hover:bg-[#2a2a2a] transition-all duration-200 
+           active:scale-95 inline-flex items-center gap-2 cursor-pointer shadow-sm;
   }
   .btn-outline {
-    @apply border border-brand-border text-white font-medium px-6 py-2.5 rounded-lg
-           hover:border-brand-gold hover:text-brand-gold transition-all duration-200
-           inline-flex items-center gap-2 cursor-pointer;
+    @apply border border-[#1a1a1a] text-[#111111] bg-white font-medium px-6 py-2.5 rounded-xl
+           hover:border-[#111111] hover:bg-[#f5f5f4] transition-all duration-200
+           inline-flex items-center gap-2 cursor-pointer shadow-sm;
   }
   .card {
-    @apply bg-brand-card border border-brand-border rounded-2xl p-6
-           hover:border-brand-gold/40 transition-all duration-300;
+    @apply bg-white border border-[#1a1a1a]/15 rounded-2xl p-6
+           hover:border-[#111111]/40 transition-all duration-300;
   }
   .input-field {
-    @apply w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3
-           text-white placeholder-brand-muted focus:outline-none
-           focus:border-brand-gold/60 focus:ring-1 focus:ring-brand-gold/30
+    @apply w-full bg-white border border-[#1a1a1a]/20 rounded-xl px-4 py-3
+           text-[#111111] placeholder-[#666666] focus:outline-none
+           focus:border-[#111111] focus:ring-1 focus:ring-[#111111]/10
            transition-all duration-200;
   }
   .badge {
     @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
   }
   .section-title {
-    @apply text-2xl font-bold text-white mb-1;
+    @apply text-2xl font-bold text-[#111111] mb-1;
   }
   .section-sub {
-    @apply text-brand-muted text-sm mb-6;
+    @apply text-[#4a4a4a] text-sm mb-6;
   }
-  .status-processing  { @apply badge bg-yellow-500/20 text-yellow-400; }
-  .status-shipped     { @apply badge bg-blue-500/20   text-blue-400;   }
-  .status-out_for_delivery { @apply badge bg-purple-500/20 text-purple-400; }
-  .status-delivered   { @apply badge bg-green-500/20  text-green-400;  }
-  .status-cancelled   { @apply badge bg-red-500/20    text-red-400;    }
-  .status-requested   { @apply badge bg-yellow-500/20 text-yellow-400; }
-  .status-approved    { @apply badge bg-blue-500/20   text-blue-400;   }
-  .status-refunded    { @apply badge bg-green-500/20  text-green-400;  }
-  .status-rejected    { @apply badge bg-red-500/20    text-red-400;    }
+  .status-processing  { @apply badge bg-[#f5f5f4] text-[#111111]; }
+  .status-shipped     { @apply badge bg-[#f5f5f4] text-[#111111]; }
+  .status-out_for_delivery { @apply badge bg-[#f5f5f4] text-[#111111]; }
+  .status-delivered   { @apply badge bg-[#f5f5f4] text-[#111111]; }
+  .status-cancelled   { @apply badge bg-[#f5f5f4] text-[#111111]; }
+  .status-requested   { @apply badge bg-[#f5f5f4] text-[#111111]; }
+  .status-approved    { @apply badge bg-[#f5f5f4] text-[#111111]; }
+  .status-refunded    { @apply badge bg-[#f5f5f4] text-[#111111]; }
+  .status-rejected    { @apply badge bg-[#f5f5f4] text-[#111111]; }
+}
+
+[class*="bg-[#f5c518]"],
+[class*="bg-[#0a0e1a]"],
+[class*="bg-[#1e293b]"],
+[class*="bg-[#451a03]"],
+[class*="bg-[#0f172a]"],
+[class*="bg-brand-navy"],
+[class*="bg-brand-dark"],
+[class*="bg-brand-card"],
+[class*="bg-brand-gold"],
+[class*="bg-gradient-to"],
+[class*="bg-[radial-gradient"],
+[class*="from-brand-"],
+[class*="via-brand-"],
+[class*="to-brand-"] {
+  background-color: #f6f0e8 !important;
+  background-image: none !important;
+}
+
+[class*="text-[#f5c518]"],
+[class*="text-[#9a6a00]"],
+[class*="text-[#451a03]"],
+[class*="text-brand-gold"],
+[class*="text-brand-muted"],
+[class*="text-[#f5c518]/"],
+[class*="text-[#d4a017]"],
+[class*="text-[#e6b400]"] {
+  color: #111111 !important;
+}
+
+[class*="border-[#f5c518]"],
+[class*="border-[#1e293b]"],
+[class*="border-brand-border"],
+[class*="border-[#111827]"],
+[class*="border-[#334155]"] {
+  border-color: rgba(17, 17, 17, 0.18) !important;
+}
+
+[class*="hover:bg-[#e6b400]"],
+[class*="hover:bg-[#fff9db]"],
+[class*="hover:bg-[#f5c518]"],
+[class*="hover:bg-[#1e293b]"],
+[class*="hover:text-[#f5c518]"] {
+  background-color: #f5f5f4 !important;
+  color: #111111 !important;
+}
+
+[class*="bg-[#fffbeb]"],
+[class*="bg-[#fff9db]"],
+[class*="bg-[#f5c518]/10"],
+[class*="bg-[#f5c518]/20"],
+[class*="bg-[#f5c518]/15"] {
+  background-color: #f6f0e8 !important;
+}
+
+button,
+input,
+textarea,
+select {
+  transition: all 0.2s ease;
 }
