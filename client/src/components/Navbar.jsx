@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { Menu, X, Star, ChevronDown, LogOut, User, LayoutDashboard, Shield } from 'lucide-react'
@@ -8,6 +8,24 @@ export default function Navbar() {
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
+
+  const menuRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false)
+      }
+    }
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener('touchstart', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [menuOpen])
 
   const handleLogout = async () => {
     await logout()
@@ -105,7 +123,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile toggle */}
-          <div className="relative md:hidden">
+          <div ref={menuRef} className="relative md:hidden">
             <button onClick={() => setMenuOpen(!menuOpen)} className="text-[#111111] p-2 focus:outline-none">
               {menuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>

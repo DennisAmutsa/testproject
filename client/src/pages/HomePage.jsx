@@ -89,16 +89,15 @@ export default function HomePage() {
     <div className="bg-[#f6f0e8] min-h-screen text-[#111111] animate-fade-in pb-16">
 
       {/* Hero section */}
-      <section className="relative overflow-hidden border-b border-[#111111]/10 min-h-[460px]">
-        <div className="absolute inset-0 bg-[#f6f0e8] pointer-events-none" />
-
-        <div className="w-full relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1.35fr] items-stretch min-h-[460px]">
-            <div className="py-16 lg:py-20 pl-6 sm:pl-12 lg:pl-24 pr-6 lg:pr-12 flex flex-col justify-center">
-              <p className="text-[#111111] font-bold text-xs uppercase tracking-[0.25em] mb-4">
+      <section className="relative overflow-hidden border-b border-[#111111]/10 bg-[#f6f0e8]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24 py-12 lg:py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            {/* Left Content */}
+            <div>
+              <p className="text-[#111111] font-bold text-xs uppercase tracking-[0.25em] mb-3">
                 Welcome to Northstar Support
               </p>
-              <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#111111] leading-[1.1] mb-5 tracking-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-extrabold text-[#111111] leading-[1.1] mb-5 tracking-tight">
                 Get Help, <span className="text-[#111111] italic">Instantly.</span>
               </h1>
               <p className="text-[#4a4a4a] text-sm sm:text-base leading-relaxed mb-8 max-w-lg">
@@ -106,7 +105,7 @@ export default function HomePage() {
               </p>
 
               {/* Search bar */}
-              <form onSubmit={handleSearch} className="flex gap-0 mb-4 max-w-lg border border-[#111111]/15 rounded-xl bg-white overflow-hidden">
+              <form onSubmit={handleSearch} className="flex gap-0 mb-4 max-w-lg border border-[#111111]/15 rounded-xl bg-white overflow-hidden shadow-sm">
                 <div className="relative flex-1">
                   <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#4a4a4a]" />
                   <input
@@ -163,13 +162,13 @@ export default function HomePage() {
               )}
             </div>
 
-            <div className="hidden lg:block relative overflow-hidden min-h-[460px]">
+            {/* Right Hero Image Card */}
+            <div className="relative rounded-2xl overflow-hidden shadow-lg border border-[#111111]/10 h-[300px] sm:h-[380px] lg:h-[420px]">
               <img
                 src={heroImg}
-                alt="Customer support"
-                className="absolute inset-0 h-full w-full object-cover"
+                alt="Customer support hero"
+                className="w-full h-full object-cover"
               />
-              <div className="absolute inset-y-0 left-0 w-32 bg-[#f6f0e8]/75" />
             </div>
           </div>
         </div>
