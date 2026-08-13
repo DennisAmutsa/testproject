@@ -117,6 +117,7 @@ export default function App() {
             <div className="flex-1">
               <Routes>
                 <Route path="/"        element={<HomeWrapper />} />
+                <Route path="/orders"  element={<CustomerOrders />} />
                 <Route path="/about"   element={<AboutPage />} />
                 <Route path="/help"    element={<HelpPage />} />
                 <Route path="/stock"   element={<StockPage />} />

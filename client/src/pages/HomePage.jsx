@@ -93,8 +93,8 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[#f6f0e8] pointer-events-none" />
 
         <div className="w-full relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 items-center min-h-[460px]">
-            <div className="py-16 lg:py-20 pl-6 sm:pl-12 lg:pl-24 pr-6 lg:pr-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1.35fr] items-stretch min-h-[460px]">
+            <div className="py-16 lg:py-20 pl-6 sm:pl-12 lg:pl-24 pr-6 lg:pr-12 flex flex-col justify-center">
               <p className="text-[#111111] font-bold text-xs uppercase tracking-[0.25em] mb-4">
                 Welcome to Northstar Support
               </p>
@@ -163,11 +163,11 @@ export default function HomePage() {
               )}
             </div>
 
-            <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[50%] overflow-hidden">
+            <div className="hidden lg:block relative overflow-hidden min-h-[460px]">
               <img
                 src={heroImg}
                 alt="Customer support"
-                className="w-full h-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover"
               />
               <div className="absolute inset-y-0 left-0 w-32 bg-[#f6f0e8]/75" />
             </div>

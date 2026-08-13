@@ -1,21 +1,32 @@
 import { useState, useEffect } from 'react'
-import { Package, Search, Clock, MapPin, AlertCircle } from 'lucide-react'
+import { Package, Search, Clock, MapPin, AlertCircle, Mail } from 'lucide-react'
 import api from '../../services/api'
+import { useAuth } from '../../context/AuthContext'
 
 export default function CustomerOrders() {
+  const { user } = useAuth()
   const [orders, setOrders]   = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [trackId, setTrackId] = useState('')
   const [tracked, setTracked] = useState(null)
   const [trackErr, setTrackErr] = useState('')
   const [tracking, setTracking] = useState(false)
 
+  // Guest Email Lookup state
+  const [lookupEmail, setLookupEmail] = useState('')
+  const [lookupOrders, setLookupOrders] = useState([])
+  const [lookupError, setLookupError] = useState('')
+  const [hasSearched, setHasSearched] = useState(false)
+
   useEffect(() => {
-    api.get('/orders/my')
-      .then(r => setOrders(r.data))
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }, [])
+    if (user) {
+      setLoading(true)
+      api.get('/orders/my')
+        .then(r => setOrders(r.data))
+        .catch(() => {})
+        .finally(() => setLoading(false))
+    }
+  }, [user])
 
   const handleTrack = async (e) => {
     e.preventDefault()
@@ -26,6 +37,27 @@ export default function CustomerOrders() {
     } catch (err) {
       setTrackErr(err.response?.data?.message || 'Order not found.')
     } finally { setTracking(false) }
+  }
+
+  // Handle Email Lookup (Guest mode)
+  const handleEmailLookup = async (e) => {
+    e.preventDefault()
+    if (!lookupEmail.trim()) return
+    setLoading(true)
+    setLookupError('')
+    setLookupOrders([])
+    setHasSearched(true)
+    try {
+      const res = await api.get(`/orders/email/${lookupEmail.trim().toLowerCase()}`)
+      setLookupOrders(res.data)
+      if (res.data.length === 0) {
+        setLookupError('No orders found associated with this email address.')
+      }
+    } catch (err) {
+      setLookupError('Failed to fetch orders. Please check your email and try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const STEPS = ['processing', 'shipped', 'out_for_delivery', 'delivered']
@@ -87,35 +119,58 @@ export default function CustomerOrders() {
     </div>
   )
 
+  const isGuest = !user
+
   return (
     <div className="flex-1 max-w-4xl mx-auto px-6 sm:px-8 py-10 animate-fade-in overflow-y-auto">
-      <h1 className="text-2xl font-bold text-slate-800 mb-6">My Orders</h1>
+      {/* Direct Email Input Form */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-8 text-slate-900">
+        <form onSubmit={handleEmailLookup} className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            placeholder="Enter your email address (e.g. jane@example.com)"
+            value={lookupEmail}
+            onChange={e => setLookupEmail(e.target.value)}
+            required
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-800 transition-all flex-1"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-[#111111] text-white font-extrabold px-6 py-3 rounded-xl hover:bg-black transition-all whitespace-nowrap"
+          >
+            {loading ? 'Fetching Orders…' : 'View Orders'}
+          </button>
+        </form>
 
-        {/* Track by ID */}
-        <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm mb-8 text-slate-800">
-          <h2 className="text-slate-800 font-extrabold mb-3">Track an Order</h2>
-          <form onSubmit={handleTrack} className="flex gap-3">
-            <input type="text" placeholder="Enter order ID (e.g. NS-10021)" value={trackId}
-              onChange={e => setTrackId(e.target.value)} required className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500/60 transition-all flex-1" />
-            <button type="submit" disabled={tracking} className="bg-[#f5c518] text-[#0a0e1a] font-extrabold px-6 py-2.5 rounded-xl hover:bg-[#e6b400] transition-all whitespace-nowrap">
-              <Search size={15} />{tracking ? '…' : 'Track'}
-            </button>
-          </form>
-          {trackErr && <p className="text-red-500 text-sm mt-3 flex items-center gap-2 font-semibold"><AlertCircle size={14}/>{trackErr}</p>}
-          {tracked && <div className="mt-4 animate-slide-up"><OrderCard order={tracked} /></div>}
-        </div>
-
-        {/* My orders list */}
-        <h2 className="text-slate-800 font-extrabold mb-4">Order History</h2>
-        {loading ? (
-          <div className="space-y-4">{[...Array(3)].map((_, i) => <div key={i} className="bg-white border border-slate-100 h-32 rounded-2xl animate-pulse" />)}</div>
-        ) : orders.length === 0 ? (
-          <div className="bg-white border border-slate-100 rounded-2xl text-center py-12 shadow-sm text-slate-800">
-            <Package size={44} className="text-slate-300 mx-auto mb-3" />
-            <h3 className="text-slate-800 font-extrabold mb-1">No orders found</h3>
-            <p className="text-slate-500 text-sm font-semibold">Your order history will appear here.</p>
-          </div>
-        ) : orders.map(order => <OrderCard key={order._id} order={order} />)}
+        {lookupError && (
+          <p className="text-red-500 text-sm mt-3 flex items-center gap-2 font-semibold">
+            <AlertCircle size={15}/>{lookupError}
+          </p>
+        )}
       </div>
+
+      {/* Orders List (Most recent on top) */}
+      {hasSearched && (
+        <div>
+          {lookupOrders.length === 0 ? (
+            <div className="bg-white border border-slate-200 rounded-2xl text-center py-12 shadow-sm text-slate-800">
+              <Package size={44} className="text-slate-300 mx-auto mb-3" />
+              <h3 className="text-slate-800 font-extrabold mb-1">No orders found</h3>
+              <p className="text-slate-500 text-sm font-semibold">No orders are associated with this email address.</p>
+            </div>
+          ) : (
+            lookupOrders.map(order => <OrderCard key={order._id} order={order} />)
+          )}
+        </div>
+      )}
+
+      {/* Default view before typing email */}
+      {!hasSearched && !isGuest && orders.length > 0 && (
+        <div>
+          {orders.map(order => <OrderCard key={order._id} order={order} />)}
+        </div>
+      )}
+    </div>
   )
 }

@@ -16,25 +16,25 @@ export default function Navbar() {
 
   const navLinks = [
     { to: '/', label: 'Home' },
-    { to: '/dashboard/orders', label: 'Orders' },
+    { to: '/orders', label: 'Orders' },
     { to: '/dashboard/returns', label: 'Returns' },
     { to: '/stock', label: 'Stock Availability' },
     { to: '/help', label: 'Help' },
   ]
 
   return (
-    <nav className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800">
+    <nav className="sticky top-0 z-50 bg-[#f6f0e8]/95 backdrop-blur border-b border-[#111111]/10">
       <div className="w-full px-6 sm:px-12 lg:px-24">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Star size={16} className="text-white fill-white" />
+            <div className="w-8 h-8 bg-[#111111] rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Star size={16} className="text-[#f6f0e8] fill-[#f6f0e8]" />
             </div>
             <div className="leading-tight">
-              <div className="text-white font-extrabold text-sm tracking-wide">NORTHSTAR</div>
-              <div className="text-slate-400 text-[10px] tracking-widest uppercase font-semibold">Retail Co.</div>
+              <div className="text-[#111111] font-extrabold text-sm tracking-wide">NORTHSTAR</div>
+              <div className="text-[#4a4a4a] text-[10px] tracking-widest uppercase font-semibold">Retail Co.</div>
             </div>
           </Link>
 
@@ -46,7 +46,7 @@ export default function Navbar() {
                 to={link.to}
                 className={({ isActive }) =>
                   `px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                    isActive ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+                    isActive ? 'text-[#111111] bg-white/80' : 'text-[#4a4a4a] hover:text-[#111111] hover:bg-white/70'
                   }`
                 }
               >
@@ -61,35 +61,35 @@ export default function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition-all"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/70 transition-all"
                 >
-                  <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold text-sm">
+                  <div className="w-8 h-8 rounded-full bg-[#111111] flex items-center justify-center text-[#f6f0e8] font-bold text-sm">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
-                  <span className="text-white text-sm font-semibold">{user.name.split(' ')[0]}</span>
-                  {user.role === 'admin' && <Shield size={14} className="text-amber-400" />}
-                  <ChevronDown size={14} className="text-slate-400" />
+                  <span className="text-[#111111] text-sm font-semibold">{user.name.split(' ')[0]}</span>
+                  {user.role === 'admin' && <Shield size={14} className="text-[#111111]" />}
+                  <ChevronDown size={14} className="text-[#4a4a4a]" />
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-slate-800 border border-slate-700 rounded-xl shadow-xl overflow-hidden animate-fade-in">
-                    <div className="px-4 py-3 border-b border-slate-700">
-                      <p className="text-white text-sm font-semibold">{user.name}</p>
-                      <p className="text-slate-400 text-xs">{user.email}</p>
-                      <span className={`badge mt-1 ${user.role === 'admin' ? 'bg-amber-400/20 text-amber-400' : 'bg-blue-500/20 text-blue-400'}`}>
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-[#111111]/15 rounded-xl shadow-xl overflow-hidden animate-fade-in">
+                    <div className="px-4 py-3 border-b border-[#111111]/10">
+                      <p className="text-[#111111] text-sm font-semibold">{user.name}</p>
+                      <p className="text-[#4a4a4a] text-xs">{user.email}</p>
+                      <span className={`badge mt-1 ${user.role === 'admin' ? 'bg-[#111111]/10 text-[#111111]' : 'bg-[#111111]/5 text-[#111111]'}`}>
                         {user.role}
                       </span>
                     </div>
                     <Link
                       to={user.role === 'admin' ? '/admin' : '/dashboard'}
                       onClick={() => setDropdownOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-white hover:bg-slate-700 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#111111] hover:bg-[#f6f0e8] transition-colors"
                     >
                       <LayoutDashboard size={14} /> Dashboard
                     </Link>
                     <button
                       onClick={() => { handleLogout(); setDropdownOpen(false); }}
-                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-rose-400 hover:bg-rose-500/10 w-full text-left transition-colors"
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#111111] hover:bg-[#f6f0e8] w-full text-left transition-colors"
                     >
                       <LogOut size={14} /> Logout
                     </button>
@@ -105,31 +105,31 @@ export default function Navbar() {
           </div>
 
           {/* Mobile toggle */}
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-white p-2">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-[#111111] p-2">
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="md:hidden border-t border-slate-800 py-4 space-y-1 animate-fade-in">
+          <div className="md:hidden border-t border-[#111111]/10 py-4 space-y-1 animate-fade-in">
             {navLinks.map(link => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 onClick={() => setMenuOpen(false)}
                 className={({ isActive }) =>
-                  `block px-4 py-2.5 rounded-lg text-sm font-medium ${isActive ? 'text-amber-400 bg-amber-400/10' : 'text-slate-300 hover:text-white'}`
+                  `block px-4 py-2.5 rounded-lg text-sm font-medium ${isActive ? 'text-[#111111] bg-white/80' : 'text-[#4a4a4a] hover:text-[#111111]'}`
                 }
               >
                 {link.label}
               </NavLink>
             ))}
-            <div className="pt-3 border-t border-slate-800 flex gap-2 px-2">
+            <div className="pt-3 border-t border-[#111111]/10 flex gap-2 px-2">
               {user ? (
                 <>
                   <Link to={user.role === 'admin' ? '/admin' : '/dashboard'} onClick={() => setMenuOpen(false)} className="btn-outline flex-1 justify-center text-sm py-2">Dashboard</Link>
-                  <button onClick={() => { handleLogout(); setMenuOpen(false); }} className="btn-outline flex-1 justify-center text-sm py-2 text-rose-400 border-rose-500/30">Logout</button>
+                  <button onClick={() => { handleLogout(); setMenuOpen(false); }} className="btn-outline flex-1 justify-center text-sm py-2 text-[#111111] border-[#111111]/20">Logout</button>
                 </>
               ) : (
                 <>
