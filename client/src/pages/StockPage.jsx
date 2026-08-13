@@ -153,10 +153,10 @@ export default function StockPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-slate-800 animate-fade-in bg-white border border-slate-100 rounded-2xl shadow-sm my-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-slate-900 animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-2xl font-extrabold text-slate-850 mb-1">Product Catalog & Ordering</h1>
-        <p className="text-slate-500 text-sm font-semibold">Browse real-time inventory, place orders, or request back-in-stock alerts.</p>
+        <h1 className="text-2xl font-black text-slate-900 mb-1">Product Catalog & Ordering</h1>
+        <p className="text-slate-600 text-sm font-semibold">Browse real-time inventory, place orders, or request back-in-stock alerts.</p>
       </div>
 
       {/* Search & Filter */}
@@ -164,24 +164,24 @@ export default function StockPage() {
         <div className="relative sm:col-span-2">
           <input type="text" placeholder="Search catalog..." value={query}
             onChange={e => setQuery(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-xs text-slate-800 focus:outline-none focus:border-amber-500/50 transition-all" />
-          <Search size={14} className="absolute left-3.5 top-3.5 text-slate-400" />
+            className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-500 transition-all shadow-sm" />
+          <Search size={14} className="absolute left-3.5 top-3.5 text-slate-500" />
         </div>
         <select value={category} onChange={e => setCategory(e.target.value)}
-          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-800 focus:outline-none">
+          className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 font-bold focus:outline-none shadow-sm">
           <option value="">All Categories</option>
           {categories.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
-        <button type="submit" className="bg-[#f5c518] text-[#0a0e1a] font-extrabold px-6 py-3 rounded-xl hover:bg-[#e6b400] transition-all text-xs flex items-center justify-center gap-1.5 shadow-sm">
+        <button type="submit" className="bg-[#0a0e1a] text-[#f5c518] font-black px-6 py-3 rounded-xl hover:bg-black transition-all text-xs flex items-center justify-center gap-1.5 shadow-md">
           <Filter size={14} /> Filter Search
         </button>
       </form>
 
       {/* Stock Tabs */}
-      <div className="flex gap-2 mb-8 border-b border-slate-100 pb-4 flex-wrap">
+      <div className="flex gap-2 mb-8 border-b border-slate-200 pb-4 flex-wrap">
         {[{ label: "All Levels", value: "" }, { label: "Good Stock", value: "in_stock" }, { label: "Low Stock", value: "low_stock" }, { label: "Out of Stock", value: "out_of_stock" }].map(tab => (
           <button key={tab.value} type="button" onClick={() => setStockFilter(tab.value)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${stockFilter === tab.value ? "bg-[#0a0e1a] text-white shadow-sm" : "bg-slate-50 border border-slate-200 text-slate-500 hover:text-slate-800"}`}>
+            className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${stockFilter === tab.value ? "bg-[#0a0e1a] text-[#f5c518] shadow-md border border-[#0a0e1a]" : "bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 shadow-sm"}`}>
             {tab.label}
           </button>
         ))}
@@ -205,36 +205,36 @@ export default function StockPage() {
             const ns = notifyState[product.productId] || {}
             return (
               <div key={product._id}
-                className={`border rounded-2xl p-5 shadow-sm transition-all flex flex-col justify-between min-h-[240px] relative ${isOut ? "bg-slate-50 border-slate-200 opacity-60 grayscale" : "bg-white border-slate-100 hover:shadow-md"}`}>
+                className={`border rounded-2xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[250px] relative ${isOut ? "bg-slate-50 border-slate-300 opacity-60 grayscale" : "bg-white border-slate-200"}`}>
 
                 {/* Unavailable ribbon */}
                 {isOut && (
-                  <div className="absolute top-3 right-3 bg-red-100 text-red-600 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border border-red-200">
+                  <div className="absolute top-3 right-3 bg-red-100 text-red-700 text-[9px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full border border-red-200">
                     Unavailable
                   </div>
                 )}
 
                 <div>
                   {product.image && (
-                    <div className="w-full h-44 bg-slate-50 rounded-xl mb-4 border border-slate-100 flex items-center justify-center p-2 overflow-hidden">
+                    <div className="w-full h-44 bg-slate-50 rounded-xl mb-4 border border-slate-200 flex items-center justify-center p-2 overflow-hidden">
                       <img src={product.image} alt={product.name}
                         className={`max-h-full max-w-full object-contain ${isOut ? "grayscale" : ""}`} />
                     </div>
                   )}
                   <div className="mb-2">{getStockBadge(product)}</div>
-                  <h3 className="text-slate-800 font-extrabold text-xs mb-1 line-clamp-2 leading-snug">{product.name}</h3>
-                  <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-2">{product.category}</p>
+                  <h3 className="text-slate-900 font-black text-sm mb-0.5 line-clamp-2 leading-snug">{product.name}</h3>
+                  <p className="text-slate-500 text-[10px] font-extrabold uppercase tracking-wider mb-2">{product.category}</p>
                 </div>
 
                 <div>
-                  <p className="text-slate-800 font-black text-sm mb-3">KES {product.price?.toLocaleString()}</p>
+                  <p className="text-slate-950 font-black text-base mb-3">KES {product.price?.toLocaleString()}</p>
 
                   {product.variants?.length > 0 && (
-                    <div className="border-t border-slate-50 pt-2.5 mb-3">
-                      <p className="text-slate-400 text-[9px] font-bold mb-1.5 uppercase tracking-wider">Sizes/Variants:</p>
+                    <div className="border-t border-slate-150 pt-2.5 mb-3">
+                      <p className="text-slate-600 text-[9px] font-bold mb-1.5 uppercase tracking-wider">Sizes/Variants:</p>
                       <div className="flex flex-wrap gap-1">
                         {product.variants.map((v, i) => (
-                          <span key={i} className={`text-[9px] font-bold px-2 py-0.5 rounded border ${v.stock > 0 ? "bg-slate-50 border-slate-200 text-slate-600" : "border-slate-100 text-slate-300 line-through"}`}>
+                          <span key={i} className={`text-[9px] font-extrabold px-2 py-0.5 rounded border ${v.stock > 0 ? "bg-slate-100 border-slate-300 text-slate-800" : "border-slate-200 text-slate-400 line-through"}`}>
                             {v.size || v.color} ({v.stock})
                           </span>
                         ))}
@@ -246,9 +246,9 @@ export default function StockPage() {
                   {!isOut ? (
                     <button
                       onClick={() => openOrderModal(product)}
-                      className="w-full flex items-center justify-center gap-1.5 bg-[#f5c518] text-[#0a0e1a] font-extrabold text-xs py-2 rounded-xl hover:bg-[#e6b400] transition-all shadow-sm"
+                      className="w-full flex items-center justify-center gap-1.5 bg-[#0a0e1a] text-[#f5c518] font-black text-xs py-2.5 rounded-xl hover:bg-black transition-all shadow-md"
                     >
-                      <ShoppingBag size={13} /> Order Now
+                      <ShoppingBag size={14} /> Order Now
                     </button>
                   ) : (
                     <div className="border-t border-slate-100 pt-3">
