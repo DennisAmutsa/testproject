@@ -46,6 +46,8 @@ export async function sendRestockEmail(to, product) {
       </div>
     `,
   });
+}
+
 /**
  * Send new order confirmation email to customer & notification to admin
  */
