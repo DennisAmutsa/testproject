@@ -216,8 +216,10 @@ export default function StockPage() {
 
                 <div>
                   {product.image && (
-                    <img src={product.image} alt={product.name}
-                      className={`w-full h-32 object-cover rounded-xl mb-4 border border-slate-100 ${isOut ? "grayscale" : ""}`} />
+                    <div className="w-full h-44 bg-slate-50 rounded-xl mb-4 border border-slate-100 flex items-center justify-center p-2 overflow-hidden">
+                      <img src={product.image} alt={product.name}
+                        className={`max-h-full max-w-full object-contain ${isOut ? "grayscale" : ""}`} />
+                    </div>
                   )}
                   <div className="mb-2">{getStockBadge(product)}</div>
                   <h3 className="text-slate-800 font-extrabold text-xs mb-1 line-clamp-2 leading-snug">{product.name}</h3>

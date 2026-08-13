@@ -240,7 +240,9 @@ export default function AdminProducts() {
               <div key={p._id} className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow relative text-slate-800 flex flex-col justify-between min-h-[190px]">
                 <div>
                   {p.image && (
-                    <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded-xl mb-4 border border-slate-100" />
+                    <div className="w-full h-44 bg-slate-50 rounded-xl mb-4 border border-slate-100 flex items-center justify-center p-2 overflow-hidden">
+                      <img src={p.image} alt={p.name} className="max-h-full max-w-full object-contain" />
+                    </div>
                   )}
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <div className="min-w-0">
